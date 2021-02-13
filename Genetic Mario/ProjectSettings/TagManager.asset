@@ -3,7 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - FloorBlock
+  - BrickBlock
+  - QuestionBlock
+  - Floor
+  - Flag
+  - Item
+  - ItemBlock
+  - Enemy
+  - Pipe
+  - Fire
   layers:
   - Default
   - TransparentFX
