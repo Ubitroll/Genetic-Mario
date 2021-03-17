@@ -10,6 +10,8 @@ public class Mario : MonoBehaviour
     public Vector2 velocity;
     public float jumpVel;
 
+    public float faceDir;
+
     public float speed;
     public float frictionValue;
     public float opposingForce;
@@ -101,10 +103,12 @@ public class Mario : MonoBehaviour
         if( Input.GetAxisRaw("Horizontal") > 0 && !TouchingWallRight())
         {
             this.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, this.GetComponent<Rigidbody2D>().velocity.y);
+            //faceDir = 1.0f;
         }
         if (Input.GetAxisRaw("Horizontal") < 0 && !TouchingWallLeft())
         {
             this.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, this.GetComponent<Rigidbody2D>().velocity.y);
+            //faceDir = 2.0f;
         }
 
         if (Input.GetAxisRaw("Horizontal") == 0 )
@@ -112,10 +116,12 @@ public class Mario : MonoBehaviour
             currentSpeed = this.GetComponent<Rigidbody2D>().velocity.x;
             opposingForce = -currentSpeed;
 
+            animator.SetFloat("IdleType", faceDir);
+
             this.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector2(opposingForce * frictionValue, 0));
         }
 
-
+        animator.SetFloat("Speed", this.GetComponent<Rigidbody2D>().velocity.x);
 
 
     }
