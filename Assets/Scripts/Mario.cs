@@ -5,6 +5,7 @@ using UnityEngine;
 public class Mario : MonoBehaviour
 {
     [SerializeField] private LayerMask platformLayerMask;
+    public Animator animator;
     public Vector2 position;
     public Vector2 velocity;
     public float jumpVel;
@@ -48,7 +49,7 @@ public class Mario : MonoBehaviour
 
     public bool TouchingWallLeft()
     {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, 0.2f, platformLayerMask);
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, 0.3f, platformLayerMask);
         Color rayColor;
 
         if (raycastHit.collider != null)
@@ -60,7 +61,7 @@ public class Mario : MonoBehaviour
             rayColor = Color.red;
         }
 
-        Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.y, 0f), Vector2.left * (boxCollider.bounds.extents.y + 0.1f), rayColor);
+        Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.y, 0f), Vector2.left * (boxCollider.bounds.extents.y + 0.3f), rayColor);
         
         Debug.Log(raycastHit.collider);
         return raycastHit.collider != null;
@@ -88,6 +89,7 @@ public class Mario : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        animator.SetFloat("Horizontal", Input.GetAxisRaw("Horizontal"));
         jumpPressed = Input.GetButtonDown("Jump");
 
 
