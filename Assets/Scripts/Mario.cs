@@ -17,8 +17,14 @@ public class Mario : MonoBehaviour
     public float opposingForce;
 
     public BoxCollider2D boxCollider;
+    public Rigidbody2D rb;
 
     public float currentSpeed;
+    public float maxSpeed;
+
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2f;
+
 
     public bool jumpPressed = false;
     public bool jumping = false;
@@ -27,6 +33,11 @@ public class Mario : MonoBehaviour
     void Start()
     {
         
+    }
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public bool IsGrounded()
@@ -92,36 +103,50 @@ public class Mario : MonoBehaviour
     void Update()
     {
         animator.SetFloat("Horizontal", Input.GetAxisRaw("Horizontal"));
-        jumpPressed = Input.GetButtonDown("Jump");
-
-
-        if (IsGrounded() && jumpPressed )
+        
+        if (IsGrounded() && Input.GetButtonDown("Jump"))
         {
-          
-            this.GetComponent<Rigidbody2D>().velocity = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x, jumpVel);
+            rb.velocity = Vector2.up * jumpVel;
+        }
+
+        if (rb.velocity.y < 0)
+        {
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+        else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
+        {
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
         if( Input.GetAxisRaw("Horizontal") > 0 && !TouchingWallRight())
         {
-            this.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, this.GetComponent<Rigidbody2D>().velocity.y);
+            rb.velocity += Vector2.right * speed * Time.deltaTime;
             //faceDir = 1.0f;
         }
         if (Input.GetAxisRaw("Horizontal") < 0 && !TouchingWallLeft())
         {
-            this.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, this.GetComponent<Rigidbody2D>().velocity.y);
+            rb.velocity += Vector2.left * speed * Time.deltaTime;
             //faceDir = 2.0f;
         }
 
         if (Input.GetAxisRaw("Horizontal") == 0 )
         {
-            currentSpeed = this.GetComponent<Rigidbody2D>().velocity.x;
-            opposingForce = -currentSpeed;
+            //currentSpeed = rb.velocity.x;
+            //opposingForce = -currentSpeed;
 
             animator.SetFloat("IdleType", faceDir);
 
-            this.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector2(opposingForce * frictionValue, 0));
+            //rb.AddRelativeForce(new Vector2(opposingForce * frictionValue, 0));
         }
 
-        animator.SetFloat("Speed", this.GetComponent<Rigidbody2D>().velocity.x);
+        Vector2 vel = rb.velocity;
+        float jumpTemp = vel.y;
+        vel.y = 0.0f;
+        vel = Vector2.ClampMagnitude(vel,maxSpeed);
+        vel.y = jumpTemp;
+
+        rb.velocity = vel;
+
+        animator.SetFloat("Speed", rb.velocity.x);
 
 
     }

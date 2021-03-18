@@ -1611,13 +1611,17 @@ MonoBehaviour:
   animator: {fileID: 1254141446}
   position: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
-  jumpVel: 34
+  jumpVel: 28
   faceDir: 0
-  speed: 12
+  speed: 65
   frictionValue: 2.35
   opposingForce: 0
   boxCollider: {fileID: 1254141443}
+  rb: {fileID: 0}
   currentSpeed: 0
+  maxSpeed: 15
+  fallMultiplier: 4
+  lowJumpMultiplier: 17
   jumpPressed: 0
   jumping: 0
 --- !u!50 &1254141445
@@ -1635,7 +1639,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 12.53
+  m_GravityScale: 8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
