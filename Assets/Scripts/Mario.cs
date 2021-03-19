@@ -9,7 +9,6 @@ public class Mario : MonoBehaviour
     public Animator animator;
     public SpriteRenderer spriteRenderer;
 
-
     public float jumpVel;
 
     public float speed;
@@ -25,7 +24,12 @@ public class Mario : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        EventSystem.current.onGoombaSquished += GoombaSquished;
+    }
+
+    private void GoombaSquished(int id)
+    {
+        rb.velocity = Vector2.up * jumpVel;
     }
 
     private void Awake()
@@ -69,7 +73,7 @@ public class Mario : MonoBehaviour
 
         Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.y, 0f), Vector2.left * (boxCollider.bounds.extents.y + 0.2f), rayColor);
         
-        Debug.Log(raycastHit.collider);
+        //Debug.Log(raycastHit.collider);
         return raycastHit.collider != null;
     }
     public bool TouchingWallRight()
@@ -88,7 +92,7 @@ public class Mario : MonoBehaviour
 
         Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.y, 0f), Vector2.left * (boxCollider.bounds.extents.y + 0.2f), rayColor);
 
-        Debug.Log(raycastHit.collider);
+        //Debug.Log(raycastHit.collider);
         return raycastHit.collider != null;
     }
 
@@ -141,7 +145,7 @@ public class Mario : MonoBehaviour
 
         rb.velocity = vel;
 
-        Debug.Log(rb.velocity.y);
+        //Debug.Log(rb.velocity.y);
 
         //Set animator var to the x vel
         animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));

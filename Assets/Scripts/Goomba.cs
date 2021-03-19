@@ -5,13 +5,20 @@ using UnityEngine;
 public class Goomba : MonoBehaviour
 {
     [SerializeField] private LayerMask platformLayerMask;
+    [SerializeField] private LayerMask playerMask;
+    [SerializeField] private LayerMask enemyMask;
+
+    public int id;
 
     public Animator animator;
+    public SpriteRenderer spriteRenderer;
 
     public float speed;
-    public float maxSpeed;
-
     public bool isRight;
+    public bool heDead;
+
+    public bool shouldCollide;
+
 
     public BoxCollider2D boxCollider;
     public Rigidbody2D rb;
@@ -23,7 +30,16 @@ public class Goomba : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        shouldCollide = true;
     }
+
+    private void Start()
+    {
+        EventSystem.current.onGoombaSquished += GoombaKilled;
+    }
+
+
     void GoombaMoveLeft()
     {
         //rb.velocity += Vector2.left * speed * Time.deltaTime;
@@ -34,15 +50,23 @@ public class Goomba : MonoBehaviour
         //rb.velocity += Vector2.right * speed * Time.deltaTime;
         transform.position += transform.right * (Time.deltaTime * speed);
     }
+    void GoombaStoppedBecauseHeIsDeadOhLordWhyDoTheGoodDieYoung()
+    {
+        rb.velocity = Vector3.zero;
+    }
 
     public bool TouchingWallLeft()
     {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, 0.01f, platformLayerMask);
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, 0.05f);
         Color rayColor;
 
         if (raycastHit.collider != null)
         {
             rayColor = Color.green;
+            if (raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("platform") || raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
+            {
+                return true;
+            }
         }
         else
         {
@@ -50,18 +74,21 @@ public class Goomba : MonoBehaviour
         }
 
         Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.y, 0f), Vector2.left * (boxCollider.bounds.extents.y + 0.01f), rayColor);
-
-        Debug.Log(raycastHit.collider);
-        return raycastHit.collider != null;
+        return false;
+        //Debug.Log(raycastHit.collider);
     }
     public bool TouchingWallRight()
     {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.right, 0.01f, platformLayerMask);
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.right, 0.05f);
         Color rayColor;
 
         if (raycastHit.collider != null)
         {
             rayColor = Color.green;
+            if (raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("platform") || raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
+            {
+                return true;
+            }
         }
         else
         {
@@ -69,21 +96,54 @@ public class Goomba : MonoBehaviour
         }
 
         Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.y, 0f), Vector2.left * (boxCollider.bounds.extents.y + 0.01f), rayColor);
+        return false;
 
-        Debug.Log(raycastHit.collider);
-        return raycastHit.collider != null;
     }
+
+    public bool MarioOnHead(bool active)
+    {
+        if (active)
+        {
+            RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.up, 0.01f, playerMask);
+            Color rayColor;
+
+            if (raycastHit.collider != null)
+            {
+                rayColor = Color.green;
+            }
+            else
+            {
+                rayColor = Color.red;
+            }
+
+            //Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.y, 0f), Vector2.left * (boxCollider.bounds.extents.y + 0.01f), rayColor);
+
+            Debug.Log(raycastHit.collider);
+            return raycastHit.collider != null;
+        }
+        else return false;
+        
+    }
+
 
     public void Update()
     {
-        if(isRight)
+        if(isRight && !heDead)
         {
             GoombaMoveRight();
+            //spriteRenderer.flipX = true;
         }
-        else
+        if(!isRight && !heDead)
         {
             GoombaMoveLeft();
+            //spriteRenderer.flipX = false;
         }
+
+        if(heDead)
+        {
+            GoombaStoppedBecauseHeIsDeadOhLordWhyDoTheGoodDieYoung();
+        }
+
 
         if(TouchingWallLeft())
         {
@@ -93,5 +153,35 @@ public class Goomba : MonoBehaviour
         {
             isRight = false;
         }
+
+        if(MarioOnHead(shouldCollide))
+        {
+            heDead = true;
+            EventSystem.current.GoombaSquished(id);
+            animator.SetBool("Dead", true);
+            shouldCollide = false;
+            //MarioOnHead(shouldCollide);
+            gameObject.layer = 9;
+            
+        }  
+
+        
+
     }
+
+    private void GoombaKilled(int id)
+    {
+        if(id == this.id) StartCoroutine(kill());
+
+    }
+
+    IEnumerator kill()
+    {
+        
+        yield return new WaitForSeconds(0.7f);
+        Destroy(this.gameObject);
+    }
+
+    
+  
 }
