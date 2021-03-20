@@ -5,8 +5,10 @@ using UnityEngine;
 public class Mario : MonoBehaviour
 {
     [SerializeField] private LayerMask platformLayerMask;
-   
+
     public Animator animator;
+    public Animator deadAnimator;
+
     public SpriteRenderer spriteRenderer;
 
     public float jumpVel;
@@ -25,6 +27,8 @@ public class Mario : MonoBehaviour
     void Start()
     {
         EventSystem.current.onGoombaSquished += GoombaSquished;
+        EventSystem.current.onMarioKilled += MarioDeath;
+
     }
 
     private void GoombaSquished(int id)
@@ -32,9 +36,17 @@ public class Mario : MonoBehaviour
         rb.velocity = Vector2.up * jumpVel;
     }
 
+    private void MarioDeath()
+    {
+        animator.SetBool("MarioDead", true);
+        rb.velocity = Vector2.up * jumpVel;
+        gameObject.layer = 10;
+        
+    }
+
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        //rb = GetComponent<Rigidbody2D>();
     }
 
     public bool IsGrounded()
@@ -42,7 +54,7 @@ public class Mario : MonoBehaviour
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, platformLayerMask);
         Color rayColor;
 
-        if(raycastHit.collider != null)
+        if (raycastHit.collider != null)
         {
             rayColor = Color.green;
         }
@@ -53,7 +65,7 @@ public class Mario : MonoBehaviour
 
         Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.x, 0f), Vector2.down * (boxCollider.bounds.extents.y + 0.1f), rayColor);
         Debug.DrawRay(boxCollider.bounds.center - new Vector3(boxCollider.bounds.extents.x, 0f), Vector2.down * (boxCollider.bounds.extents.y + 0.1f), rayColor);
-        Debug.DrawRay(boxCollider.bounds.center - new Vector3(0f,boxCollider.bounds.extents.y), Vector2.right * (boxCollider.bounds.extents.y + 0.1f), rayColor);
+        Debug.DrawRay(boxCollider.bounds.center - new Vector3(0f, boxCollider.bounds.extents.y), Vector2.right * (boxCollider.bounds.extents.y + 0.1f), rayColor);
         return raycastHit.collider != null;
     }
 
@@ -72,7 +84,7 @@ public class Mario : MonoBehaviour
         }
 
         Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.y, 0f), Vector2.left * (boxCollider.bounds.extents.y + 0.2f), rayColor);
-        
+
         //Debug.Log(raycastHit.collider);
         return raycastHit.collider != null;
     }
@@ -100,13 +112,13 @@ public class Mario : MonoBehaviour
     void Update()
     {
         animator.SetFloat("Horizontal", Input.GetAxisRaw("Horizontal")); //Set animator var to horizontal input
-        
+
         if (IsGrounded() && Input.GetButtonDown("Jump")) //Check if grounded, if grounded, jump
         {
             rb.velocity = Vector2.up * jumpVel;
         }
 
-        if (IsGrounded()){ animator.SetBool("Ground", true); }
+        if (IsGrounded()) { animator.SetBool("Ground", true); }
         else { animator.SetBool("Ground", false); }
 
         if (rb.velocity.y < 0.001)//If player has reached peak of jump or is falling, apply the fall grav modifier.
@@ -117,22 +129,22 @@ public class Mario : MonoBehaviour
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
-        if( Input.GetAxisRaw("Horizontal") > 0) //If the player is not touching a wall and the player is pressing right, apply force.
+        if (Input.GetAxisRaw("Horizontal") > 0) //If the player is not touching a wall and the player is pressing right, apply force.
         {
             spriteRenderer.flipX = false;
 
             if (!TouchingWallRight()) rb.velocity += Vector2.right * speed * Time.deltaTime;
         }
-        if (Input.GetAxisRaw("Horizontal") < 0 ) //Similar to above
+        if (Input.GetAxisRaw("Horizontal") < 0) //Similar to above
         {
             spriteRenderer.flipX = true;
 
             if (!TouchingWallLeft()) rb.velocity += Vector2.left * speed * Time.deltaTime;
         }
 
-        if (Input.GetAxisRaw("Horizontal") == 0 )
+        if (Input.GetAxisRaw("Horizontal") == 0)
         {
-            
+
         }
 
         //This section takes the current velocity, removes the current y vel and stores it for later use.
@@ -140,7 +152,7 @@ public class Mario : MonoBehaviour
         Vector2 vel = rb.velocity;
         float jumpTemp = vel.y;
         vel.y = 0.0f;
-        vel = Vector2.ClampMagnitude(vel,maxSpeed);
+        vel = Vector2.ClampMagnitude(vel, maxSpeed);
         vel.y = jumpTemp;
 
         rb.velocity = vel;

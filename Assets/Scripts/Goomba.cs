@@ -8,14 +8,17 @@ public class Goomba : MonoBehaviour
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private LayerMask enemyMask;
 
+
     public int id;
 
     public Animator animator;
+    
     public SpriteRenderer spriteRenderer;
 
     public float speed;
     public bool isRight;
     public bool heDead;
+    public bool marioKilled;
 
     public bool shouldCollide;
 
@@ -29,14 +32,16 @@ public class Goomba : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = this.gameObject.GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        marioKilled = false;
         shouldCollide = true;
     }
 
     private void Start()
     {
         EventSystem.current.onGoombaSquished += GoombaKilled;
+        EventSystem.current.onMarioKilled += MarioDeaded;
     }
 
 
@@ -52,7 +57,7 @@ public class Goomba : MonoBehaviour
     }
     void GoombaStoppedBecauseHeIsDeadOhLordWhyDoTheGoodDieYoung()
     {
-        rb.velocity = Vector3.zero;
+        rb.velocity = Vector2.zero;
     }
 
     public bool TouchingWallLeft()
@@ -66,6 +71,11 @@ public class Goomba : MonoBehaviour
             if (raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("platform") || raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
             {
                 return true;
+            }
+
+            if (raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("player"))
+            {
+                EventSystem.current.MarioKilled();
             }
         }
         else
@@ -88,6 +98,10 @@ public class Goomba : MonoBehaviour
             if (raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("platform") || raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
             {
                 return true;
+            }
+            if (raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("player"))
+            {
+                EventSystem.current.MarioKilled();
             }
         }
         else
@@ -122,39 +136,39 @@ public class Goomba : MonoBehaviour
             return raycastHit.collider != null;
         }
         else return false;
-        
+
     }
 
 
     public void Update()
     {
-        if(isRight && !heDead)
+        if (isRight && !heDead && !marioKilled)
         {
             GoombaMoveRight();
             //spriteRenderer.flipX = true;
         }
-        if(!isRight && !heDead)
+        if (!isRight && !heDead && !marioKilled)
         {
             GoombaMoveLeft();
             //spriteRenderer.flipX = false;
         }
 
-        if(heDead)
+        if (heDead)
         {
             GoombaStoppedBecauseHeIsDeadOhLordWhyDoTheGoodDieYoung();
         }
 
 
-        if(TouchingWallLeft())
+        if (TouchingWallLeft())
         {
             isRight = true;
-        }  
-        if(TouchingWallRight())
+        }
+        if (TouchingWallRight())
         {
             isRight = false;
         }
 
-        if(MarioOnHead(shouldCollide))
+        if (MarioOnHead(shouldCollide))
         {
             heDead = true;
             EventSystem.current.GoombaSquished(id);
@@ -162,26 +176,31 @@ public class Goomba : MonoBehaviour
             shouldCollide = false;
             //MarioOnHead(shouldCollide);
             gameObject.layer = 9;
-            
-        }  
 
-        
+        }
+
+
 
     }
 
     private void GoombaKilled(int id)
     {
-        if(id == this.id) StartCoroutine(kill());
+        if (id == this.id) Destroy(gameObject, 0.7f);
 
+    }
+
+    private void MarioDeaded()
+    {
+        marioKilled = true; Debug.Log("He ded");
+        
     }
 
     IEnumerator kill()
     {
-        
+
         yield return new WaitForSeconds(0.7f);
-        Destroy(this.gameObject);
     }
 
-    
-  
+
+
 }

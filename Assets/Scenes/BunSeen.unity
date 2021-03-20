@@ -237,6 +237,7 @@ MonoBehaviour:
   speed: 1.6
   isRight: 0
   heDead: 0
+  marioKilled: 0
   shouldCollide: 1
   boxCollider: {fileID: 17172151}
   rb: {fileID: 0}
@@ -305,7 +306,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &378960433
 GameObject:
@@ -730,6 +731,56 @@ Tilemap:
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
   - first: {x: -4, y: -1, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: -3, y: -1, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: -2, y: -1, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: -1, y: -1, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 0, y: -1, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 1, y: -1, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -1251,17 +1302,17 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 61
+  - m_RefCount: 66
     m_Data: {fileID: 11400000, guid: a0097057d646bd04fa27b2bce80ee7db, type: 2}
   - m_RefCount: 24
     m_Data: {fileID: 11400000, guid: c88d7c68c0b55844280e30f54eb0280b, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 61
+  - m_RefCount: 66
     m_Data: {fileID: -6323776187934768415, guid: 918c6011e36b19942a616cbcd8d76cb8, type: 3}
   - m_RefCount: 24
     m_Data: {fileID: 5619236734769916349, guid: 918c6011e36b19942a616cbcd8d76cb8, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 85
+  - m_RefCount: 90
     m_Data:
       e00: 1
       e01: 0
@@ -1280,7 +1331,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 85
+  - m_RefCount: 90
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -1364,12 +1415,22 @@ CompositeCollider2D:
         Y: -50000100
       - X: 90000041
         Y: -50000100
-    - - X: -100000000
-        Y: -40000000
-      - X: -100000000
-        Y: -10000000
+    - - X: 69999959
+        Y: -100
+      - X: 69999900
+        Y: -41
+      - X: 69999900
+        Y: 0
+      - X: 20000100
+        Y: 0
+      - X: 20000100
+        Y: 41
+      - X: 20000041
+        Y: 100
+      - X: -30000041
+        Y: 100
       - X: -30000100
-        Y: -10000000
+        Y: 41
       - X: -30000100
         Y: 0
       - X: -100000000
@@ -1402,20 +1463,6 @@ CompositeCollider2D:
         Y: 20000041
       - X: 79999900
         Y: -100
-      - X: 69999959
-        Y: -100
-      - X: 69999900
-        Y: -41
-      - X: 69999900
-        Y: 0
-      - X: 20000100
-        Y: 0
-      - X: 20000100
-        Y: -10000000
-      - X: 79999900
-        Y: -10000000
-      - X: 79999900
-        Y: -40000000
     - - X: -19999900
         Y: 29999959
       - X: -19999900
@@ -1440,6 +1487,26 @@ CompositeCollider2D:
         Y: 29999900
       - X: -19999959
         Y: 29999900
+    - - X: -100000000
+        Y: -40000000
+      - X: -100000000
+        Y: -10000000
+      - X: -30000100
+        Y: -10000000
+      - X: -30000100
+        Y: -10000041
+      - X: -30000041
+        Y: -10000100
+      - X: 20000041
+        Y: -10000100
+      - X: 20000100
+        Y: -10000041
+      - X: 20000100
+        Y: -10000000
+      - X: 79999900
+        Y: -10000000
+      - X: 79999900
+        Y: -40000000
   m_CompositePaths:
     m_Paths:
     - - {x: 9.00001, y: -5.0000043}
@@ -1453,9 +1520,14 @@ CompositeCollider2D:
       - {x: 7.9999905, y: -5.0000043}
       - {x: 7.999996, y: -5.00001}
       - {x: 9.000004, y: -5.00001}
-    - - {x: -10, y: -4}
-      - {x: -10, y: -1}
-      - {x: -3.00001, y: -1}
+    - - {x: 6.999996, y: -0.00001}
+      - {x: 6.9999905, y: -0.0000041}
+      - {x: 6.9999905, y: 0}
+      - {x: 2.00001, y: 0}
+      - {x: 2.00001, y: 0.0000041}
+      - {x: 2.000004, y: 0.00001}
+      - {x: -3.000004, y: 0.00001}
+      - {x: -3.00001, y: 0.0000041}
       - {x: -3.00001, y: 0}
       - {x: -10, y: 0}
       - {x: -10, y: 3}
@@ -1472,13 +1544,6 @@ CompositeCollider2D:
       - {x: 7.999996, y: 2.00001}
       - {x: 7.9999905, y: 2.000004}
       - {x: 7.9999905, y: -0.00001}
-      - {x: 6.999996, y: -0.00001}
-      - {x: 6.9999905, y: -0.0000041}
-      - {x: 6.9999905, y: 0}
-      - {x: 2.00001, y: 0}
-      - {x: 2.00001, y: -1}
-      - {x: 7.9999905, y: -1}
-      - {x: 7.9999905, y: -4}
     - - {x: -1.99999, y: 2.999996}
       - {x: -1.99999, y: 3}
       - {x: 0.99999, y: 3}
@@ -1491,6 +1556,16 @@ CompositeCollider2D:
       - {x: -2.99999, y: 2.999996}
       - {x: -2.999996, y: 2.99999}
       - {x: -1.9999961, y: 2.99999}
+    - - {x: -10, y: -4}
+      - {x: -10, y: -1}
+      - {x: -3.00001, y: -1}
+      - {x: -3.00001, y: -1.000004}
+      - {x: -3.000004, y: -1.00001}
+      - {x: 2.000004, y: -1.00001}
+      - {x: 2.00001, y: -1.000004}
+      - {x: 2.00001, y: -1}
+      - {x: 7.9999905, y: -1}
+      - {x: 7.9999905, y: -4}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0
 --- !u!50 &378960439
@@ -1556,7 +1631,7 @@ Transform:
   m_Children:
   - {fileID: 378960434}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &557755510
 GameObject:
@@ -1584,7 +1659,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 557755510}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66813f4f76b7d4a4f975a7bb37660eff, type: 3}
+  m_Script: {fileID: 11500000, guid: 18a9b51ffc9ebbb4eae3bcad54f8cdb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &557755512
@@ -1599,7 +1674,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &671186187
 GameObject:
@@ -1784,12 +1859,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254141440}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.3, y: 1.51, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.87, y: 1.77, z: -5.9240685}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1254141443
 BoxCollider2D:
@@ -1833,11 +1908,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   animator: {fileID: 1254141446}
+  deadAnimator: {fileID: 0}
   spriteRenderer: {fileID: 1254141441}
   jumpVel: 28
   speed: 65
   boxCollider: {fileID: 1254141443}
-  rb: {fileID: 0}
+  rb: {fileID: 1254141445}
   maxSpeed: 15
   fallMultiplier: 4
   lowJumpMultiplier: 17
@@ -1976,6 +2052,7 @@ MonoBehaviour:
   speed: 1.6
   isRight: 0
   heDead: 0
+  marioKilled: 0
   shouldCollide: 1
   boxCollider: {fileID: 1951810609}
   rb: {fileID: 0}
@@ -2044,7 +2121,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1951810613
 Animator:

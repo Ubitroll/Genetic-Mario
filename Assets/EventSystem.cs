@@ -14,12 +14,21 @@ public class EventSystem : MonoBehaviour
     }
 
     public event Action<int> onGoombaSquished;
+    public event Action onMarioKilled;
 
     public void GoombaSquished(int id)
     {
         if (onGoombaSquished != null)
         {
             onGoombaSquished(id);
+        }
+    }
+
+    public void MarioKilled()
+    {
+        if(onMarioKilled != null)
+        {
+            onMarioKilled();
         }
     }
 
