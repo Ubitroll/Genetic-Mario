@@ -175,7 +175,7 @@ public class Goomba : MonoBehaviour
             animator.SetBool("Dead", true);
             shouldCollide = false;
             //MarioOnHead(shouldCollide);
-            gameObject.layer = 9;
+            gameObject.layer = LayerMask.NameToLayer("dead");
 
         }
 

@@ -7,7 +7,6 @@ public class Mario : MonoBehaviour
     [SerializeField] private LayerMask platformLayerMask;
 
     public Animator animator;
-    public Animator deadAnimator;
 
     public SpriteRenderer spriteRenderer;
 
@@ -111,7 +110,7 @@ public class Mario : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animator.SetFloat("Horizontal", Input.GetAxisRaw("Horizontal")); //Set animator var to horizontal input
+        //animator.SetFloat("Horizontal", Input.GetAxisRaw("Horizontal")); //Set animator var to horizontal input
 
         if (IsGrounded() && Input.GetButtonDown("Jump")) //Check if grounded, if grounded, jump
         {
