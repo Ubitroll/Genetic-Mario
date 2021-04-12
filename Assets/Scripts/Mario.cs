@@ -24,6 +24,8 @@ public class Mario : MonoBehaviour
 
     public bool marioDead = false;
 
+    public bool shortJump = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -116,7 +118,7 @@ public class Mario : MonoBehaviour
 
         if (IsGrounded() && Input.GetButtonDown("Jump")) //Check if grounded, if grounded, jump
         {
-            //Jump();
+            //ShortJump();
         }
 
         if (IsGrounded()) { animator.SetBool("Ground", true); } //Berry important pls move over xoxo
@@ -126,7 +128,7 @@ public class Mario : MonoBehaviour
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
         }
-        else if (rb.velocity.y > 0.001 && !Input.GetButton("Jump")) //If button is not held, use the short jump grav modifier
+        else if (rb.velocity.y > 0.001 && shortJump) //If button is not held, use the short jump grav modifier
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
@@ -168,8 +170,14 @@ public class Mario : MonoBehaviour
 
         if (!TouchingWallRight()) rb.velocity += Vector2.right * speed * Time.deltaTime;
     }
-    public void Jump()
+    public void LongJump()
     {
         rb.velocity = Vector2.up * jumpVel;
+        shortJump = false;
+    }
+    public void ShortJump()
+    {
+        rb.velocity = Vector2.up * jumpVel;
+        shortJump = true;
     }
 }
