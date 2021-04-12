@@ -64,6 +64,11 @@ public class MarioFSM : MonoBehaviour
         // If in the walking right state
         if (currentState == state.WalkRight)
         {
+            // Walk right
+            this.GetComponent<Mario>().MoveRight();
+
+            // Conditions to Swap States
+
             // If hitForward hits something
             if (hitForward.collider != null)
             {
@@ -105,7 +110,7 @@ public class MarioFSM : MonoBehaviour
         // If AI meets an enemy
         else if (currentState == state.MeetEnemy)
         {
-
+            
             
 
             // If Mario dies
@@ -117,6 +122,8 @@ public class MarioFSM : MonoBehaviour
         // If AI meets an obstacle
         else if (currentState == state.MeetObstacle)
         {
+            currentState = state.Jump;
+
 
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
@@ -127,6 +134,19 @@ public class MarioFSM : MonoBehaviour
         // If the AI has to jump
         else if (currentState == state.Jump)
         {
+            // Move to right
+            this.GetComponent<Mario>().MoveRight();
+
+            // If mario is grounded
+            if (this.GetComponent<Mario>().IsGrounded())
+            {
+                // Then jump
+                this.GetComponent<Mario>().Jump();
+            }
+            else if (this.GetComponent<Mario>().IsGrounded() == false)
+            {
+                currentState = state.WalkRight;
+            }
 
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
