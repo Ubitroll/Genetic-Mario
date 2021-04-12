@@ -22,6 +22,8 @@ public class Mario : MonoBehaviour
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
 
+    public bool marioDead = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +42,7 @@ public class Mario : MonoBehaviour
         animator.SetBool("MarioDead", true);
         rb.velocity = Vector2.up * jumpVel;
         gameObject.layer = 10;
-        
+        marioDead = true;
     }
 
     private void Awake()

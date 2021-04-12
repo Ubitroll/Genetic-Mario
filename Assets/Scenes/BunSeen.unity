@@ -1687,6 +1687,7 @@ GameObject:
   - component: {fileID: 1254141446}
   - component: {fileID: 1254141443}
   - component: {fileID: 1254141445}
+  - component: {fileID: 1254141447}
   m_Layer: 7
   m_Name: Player
   m_TagString: ' Player'
@@ -1809,6 +1810,7 @@ MonoBehaviour:
   maxSpeed: 15
   fallMultiplier: 4
   lowJumpMultiplier: 17
+  marioDead: 0
 --- !u!50 &1254141445
 Rigidbody2D:
   serializedVersion: 4
@@ -1849,6 +1851,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1254141447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254141440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ee26a21618a9b74bbac39617635edc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpFuzzyStart: 0
+  jumpFuzzyEnd: 0
 --- !u!1 &1615809277
 GameObject:
   m_ObjectHideFlags: 0
