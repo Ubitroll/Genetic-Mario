@@ -7,6 +7,8 @@ public class MarioFSM : MonoBehaviour
     // Variables
 
     // Raycast Variables
+    [SerializeField] private LayerMask platformLayerMask;
+    [SerializeField] private LayerMask enemyLayerMask;
     private int forwardRaycastLength;
     private int upRightRaycastLength;
     private int downRightRaycastLength;
@@ -36,7 +38,9 @@ public class MarioFSM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetStartRandomValues();
+        //SetStartRandomValues();
+
+        forwardRaycastLength = 10;
 
         // Set Rigid Body
         rigidBody = GetComponent<Rigidbody2D>();
@@ -48,14 +52,49 @@ public class MarioFSM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DebugRaycast();
+
+        print(currentState);
+
+        RaycastHit2D hitForward = Physics2D.Raycast(transform.position, Vector2.right, forwardRaycastLength);
+        RaycastHit2D hitUpward = Physics2D.Raycast(transform.position, Vector2.up, verticalRaycastLength);
+        RaycastHit2D hitUpForward = Physics2D.Raycast(transform.position, Vector2.right + Vector2.up, upRightRaycastLength);
+        RaycastHit2D hitDownForward = Physics2D.Raycast(transform.position, Vector2.right + Vector2.down, downRightRaycastLength);
+
         // If in the walking right state
         if (currentState == state.WalkRight)
         {
-            //// If forward raycast hits an obstacle
-            //if ()
-            //{
+            // If hitForward hits something
+            if (hitForward.collider != null)
+            {
+                // If forward raycast hits an obstacle
+                if (hitForward.transform.gameObject.layer == LayerMask.NameToLayer("platform"))
+                {
+                    currentState = state.MeetObstacle;
+                }
 
-            //}
+                // If forward raycast hits an enemy
+                if (hitForward.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
+                {
+                    currentState = state.MeetEnemy;
+                }
+            }
+
+            // If hitUpward hits something
+            if (hitUpward.collider != null)
+            {
+                // If forward raycast hits an obstacle
+                if (hitUpward.transform.gameObject.layer == LayerMask.NameToLayer("platform"))
+                {
+                    currentState = state.MeetObstacle;
+                }
+
+                // If forward raycast hits an enemy
+                if (hitUpward.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
+                {
+                    currentState = state.MeetEnemy;
+                }
+            }
 
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
@@ -66,6 +105,8 @@ public class MarioFSM : MonoBehaviour
         // If AI meets an enemy
         else if (currentState == state.MeetEnemy)
         {
+
+            
 
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
@@ -98,17 +139,10 @@ public class MarioFSM : MonoBehaviour
         {
 
         }
-
-        UpdateRaycast();
     }
 
-    private void UpdateRaycast()
+    private void DebugRaycast()
     {
-        RaycastHit2D hitForward = Physics2D.Raycast(transform.position, Vector2.right, forwardRaycastLength);
-        RaycastHit2D hitUpward = Physics2D.Raycast(transform.position, Vector2.up, verticalRaycastLength);
-        RaycastHit2D hitUpForward = Physics2D.Raycast(transform.position, Vector2.right + Vector2.up, upRightRaycastLength);
-        RaycastHit2D hitDownForward = Physics2D.Raycast(transform.position, Vector2.right + Vector2.down, downRightRaycastLength);
-
         Debug.DrawRay(transform.position, Vector2.right, Color.red);
         Debug.DrawRay(transform.position, Vector2.up, Color.red);
         Debug.DrawRay(transform.position, Vector2.right + Vector2.up, Color.red);
@@ -119,7 +153,12 @@ public class MarioFSM : MonoBehaviour
     {
         // Set random jump 
         jumpFuzzyStart = Mathf.RoundToInt(Random.Range(0, 100));
-        jumpFuzzyEnd = 100 - jumpFuzzyStart;
+        jumpFuzzyEnd = 100;
+
+        forwardRaycastLength = Mathf.RoundToInt(Random.Range(0, 10));
+        upRightRaycastLength = Mathf.RoundToInt(Random.Range(0, 10));
+        downRightRaycastLength = Mathf.RoundToInt(Random.Range(0, 10));
+        verticalRaycastLength = Mathf.RoundToInt(Random.Range(0, 10));
     }
 
     private void RandomNumberGeneration(int startNumber, int endNumber)
