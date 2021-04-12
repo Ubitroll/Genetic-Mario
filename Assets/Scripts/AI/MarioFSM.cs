@@ -18,7 +18,8 @@ public class MarioFSM : MonoBehaviour
     // Fuzzy logic Variables
     // Make new Random
     private float randomGeneratedNumber;
-    public int jumpFuzzyStart;
+    public int delayedJumpThreshold;
+    public int longJumpThreshold;
     public int jumpFuzzyEnd;
 
     // AI states
@@ -38,9 +39,7 @@ public class MarioFSM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //SetStartRandomValues();
-
-        forwardRaycastLength = 10;
+        SetStartRandomValues();
 
         // Set Rigid Body
         rigidBody = GetComponent<Rigidbody2D>();
@@ -85,21 +84,21 @@ public class MarioFSM : MonoBehaviour
                 }
             }
 
-            // If hitUpward hits something
-            if (hitUpward.collider != null)
-            {
-                // If forward raycast hits an obstacle
-                if (hitUpward.transform.gameObject.layer == LayerMask.NameToLayer("platform"))
-                {
-                    currentState = state.MeetObstacle;
-                }
+            //// If hitUpward hits something
+            //if (hitUpward.collider != null)
+            //{
+            //    // If forward raycast hits an obstacle
+            //    if (hitUpward.transform.gameObject.layer == LayerMask.NameToLayer("platform"))
+            //    {
+            //        currentState = state.MeetObstacle;
+            //    }
 
-                // If forward raycast hits an enemy
-                if (hitUpward.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
-                {
-                    currentState = state.MeetEnemy;
-                }
-            }
+            //    // If forward raycast hits an enemy
+            //    if (hitUpward.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
+            //    {
+            //        currentState = state.MeetEnemy;
+            //    }
+            //}
 
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
@@ -140,8 +139,18 @@ public class MarioFSM : MonoBehaviour
             // If mario is grounded
             if (this.GetComponent<Mario>().IsGrounded())
             {
-                // Then jump
-                this.GetComponent<Mario>().Jump();
+                RandomNumberGeneration(jumpFuzzyEnd);
+
+                // Then decide which jump to make
+                if (randomGeneratedNumber >= longJumpThreshold)
+                {
+                    this.GetComponent<Mario>().LongJump();
+                }
+                else if (randomGeneratedNumber < longJumpThreshold)
+                {
+                    this.GetComponent<Mario>().ShortJump();
+                }
+                
             }
             else if (this.GetComponent<Mario>().IsGrounded() == false)
             {
@@ -172,18 +181,18 @@ public class MarioFSM : MonoBehaviour
     private void SetStartRandomValues()
     {
         // Set random jump 
-        jumpFuzzyStart = Mathf.RoundToInt(Random.Range(0, 100));
+        longJumpThreshold = Mathf.RoundToInt(Random.Range(0, 100));
         jumpFuzzyEnd = 100;
 
-        forwardRaycastLength = Mathf.RoundToInt(Random.Range(0, 10));
-        upRightRaycastLength = Mathf.RoundToInt(Random.Range(0, 10));
-        downRightRaycastLength = Mathf.RoundToInt(Random.Range(0, 10));
-        verticalRaycastLength = Mathf.RoundToInt(Random.Range(0, 10));
+        forwardRaycastLength = Mathf.RoundToInt(Random.Range(3, 10));
+        upRightRaycastLength = Mathf.RoundToInt(Random.Range(3, 10));
+        downRightRaycastLength = Mathf.RoundToInt(Random.Range(3, 10));
+        verticalRaycastLength = Mathf.RoundToInt(Random.Range(3, 10));
     }
 
-    private void RandomNumberGeneration(int startNumber, int endNumber)
+    private void RandomNumberGeneration(int endNumber)
     {
         // generate random number
-        randomGeneratedNumber = Random.Range(startNumber, endNumber);
+        randomGeneratedNumber = Random.Range(0, endNumber);
     }
 }
