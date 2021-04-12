@@ -38,7 +38,7 @@ public class CameraFollow : MonoBehaviour
         }
         if (!focus)
         { 
-            gameObject.GetComponent<PixelPerfectCamera>().assetsPPU = 4;
+            gameObject.GetComponent<PixelPerfectCamera>().assetsPPU = 0;
             transform.position = unfocusTarget.position + offset;
         }
 
