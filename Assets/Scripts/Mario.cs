@@ -116,11 +116,11 @@ public class Mario : MonoBehaviour
 
         if (IsGrounded() && Input.GetButtonDown("Jump")) //Check if grounded, if grounded, jump
         {
-            rb.velocity = Vector2.up * jumpVel;
+            //Jump();
         }
 
-        if (IsGrounded()) { animator.SetBool("Ground", true); }
-        else { animator.SetBool("Ground", false); }
+        if (IsGrounded()) { animator.SetBool("Ground", true); } //Berry important pls move over xoxo
+        else { animator.SetBool("Ground", false); } //Same with this one
 
         if (rb.velocity.y < 0.001)//If player has reached peak of jump or is falling, apply the fall grav modifier.
         {
@@ -132,20 +132,11 @@ public class Mario : MonoBehaviour
         }
         if (Input.GetAxisRaw("Horizontal") > 0) //If the player is not touching a wall and the player is pressing right, apply force.
         {
-            spriteRenderer.flipX = false;
-
-            if (!TouchingWallRight()) rb.velocity += Vector2.right * speed * Time.deltaTime;
+            //MoveRight();
         }
         if (Input.GetAxisRaw("Horizontal") < 0) //Similar to above
         {
-            spriteRenderer.flipX = true;
-
-            if (!TouchingWallLeft()) rb.velocity += Vector2.left * speed * Time.deltaTime;
-        }
-
-        if (Input.GetAxisRaw("Horizontal") == 0)
-        {
-
+            //MoveLeft();
         }
 
         //This section takes the current velocity, removes the current y vel and stores it for later use.
@@ -155,15 +146,30 @@ public class Mario : MonoBehaviour
         vel.y = 0.0f;
         vel = Vector2.ClampMagnitude(vel, maxSpeed);
         vel.y = jumpTemp;
-
         rb.velocity = vel;
-
-        //Debug.Log(rb.velocity.y);
 
         //Set animator var to the x vel
         animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         animator.SetFloat("VerticalSpeed", rb.velocity.y);
 
 
+    }
+
+
+    public void MoveLeft()
+    {
+        spriteRenderer.flipX = true;
+
+        if (!TouchingWallLeft()) rb.velocity += Vector2.left * speed * Time.deltaTime;
+    }
+    public void MoveRight()
+    {
+        spriteRenderer.flipX = false;
+
+        if (!TouchingWallRight()) rb.velocity += Vector2.right * speed * Time.deltaTime;
+    }
+    public void Jump()
+    {
+        rb.velocity = Vector2.up * jumpVel;
     }
 }

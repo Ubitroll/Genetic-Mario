@@ -12,8 +12,8 @@ public class CameraFollow : MonoBehaviour
     public float mapY;
     public float minX;
     public float maxX;
-    public float cameraClampOffsetMinX;
-    public float cameraClampOffsetMaxX;
+  
+    public float cameraClampOffset;
 
     public Vector3 offset;
     public bool focus = false;
@@ -32,7 +32,8 @@ public class CameraFollow : MonoBehaviour
         {
             gameObject.GetComponent<PixelPerfectCamera>().assetsPPU = 14;
             //float targetX = Mathf.Max(minX, Mathf.Min(maxX, focusTarget.transform.position.x));
-            transform.position = new Vector3(Mathf.Clamp(focusTarget.position.x, minX + cameraClampOffsetMinX, maxX + cameraClampOffsetMaxX), mapY, focusTarget.position.z + offset.z);
+            cameraClampOffset = Camera.main.orthographicSize * Screen.width / Screen.height;
+            transform.position = new Vector3(Mathf.Clamp(focusTarget.position.x, minX + cameraClampOffset, maxX - cameraClampOffset), mapY, focusTarget.position.z + offset.z);
 
         }
         if (!focus)
