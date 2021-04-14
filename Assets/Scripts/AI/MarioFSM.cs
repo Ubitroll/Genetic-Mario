@@ -6,21 +6,26 @@ public class MarioFSM : MonoBehaviour
 {
     // Variables
 
+    // Using Loaded File Variables
+    public bool isUsingLoadedFiles;
+
     // Raycast Variables
     [SerializeField] private LayerMask platformLayerMask;
     [SerializeField] private LayerMask enemyLayerMask;
     private int forwardRaycastLength;
     private int upRightRaycastLength;
     private int downRightRaycastLength;
-    private int verticalRaycastLength;
     Rigidbody2D rigidBody;
 
     // Fuzzy logic Variables
     // Make new Random
     private float randomGeneratedNumber;
+    public float jumpDelayTime;
     public int delayedJumpThreshold;
     public int longJumpThreshold;
     public int jumpFuzzyEnd;
+    public int floorDistance = 2;
+    
 
     // AI states
     protected enum state
@@ -39,7 +44,10 @@ public class MarioFSM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetStartRandomValues();
+        if (isUsingLoadedFiles == false)
+        {
+            SetStartRandomValues();
+        }
 
         // Set Rigid Body
         rigidBody = GetComponent<Rigidbody2D>();
@@ -53,10 +61,8 @@ public class MarioFSM : MonoBehaviour
     {
         DebugRaycast();
 
-        print(currentState);
 
         RaycastHit2D hitForward = Physics2D.Raycast(transform.position, Vector2.right, forwardRaycastLength);
-        RaycastHit2D hitUpward = Physics2D.Raycast(transform.position, Vector2.up, verticalRaycastLength);
         RaycastHit2D hitUpForward = Physics2D.Raycast(transform.position, Vector2.right + Vector2.up, upRightRaycastLength);
         RaycastHit2D hitDownForward = Physics2D.Raycast(transform.position, Vector2.right + Vector2.down, downRightRaycastLength);
 
@@ -84,21 +90,41 @@ public class MarioFSM : MonoBehaviour
                 }
             }
 
-            //// If hitUpward hits something
-            //if (hitUpward.collider != null)
-            //{
-            //    // If forward raycast hits an obstacle
-            //    if (hitUpward.transform.gameObject.layer == LayerMask.NameToLayer("platform"))
-            //    {
-            //        currentState = state.MeetObstacle;
-            //    }
+            // If hitUpForward hits something
+            if (hitUpForward.collider != null)
+            {
+                // If hitUpForward raycast hits an obstacle
+                if (hitUpForward.transform.gameObject.layer == LayerMask.NameToLayer("platform"))
+                {
+                    currentState = state.MeetObstacle;
+                }
 
-            //    // If forward raycast hits an enemy
-            //    if (hitUpward.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
-            //    {
-            //        currentState = state.MeetEnemy;
-            //    }
-            //}
+                // If hitUpForward raycast hits an enemy
+                if (hitUpForward.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
+                {
+                    currentState = state.MeetEnemy;
+                }
+            }
+
+            // If hitDownForward hits something
+            if (hitDownForward.collider != null)
+            {
+                // If hitDownForward raycast hits an obstacle
+                if (hitDownForward.transform.gameObject.layer == LayerMask.NameToLayer("platform"))
+                {
+                    // If the hit range is grater than a set value (To catch pits)
+                    if (hitDownForward.distance > floorDistance)
+                    {
+                        currentState = state.MeetObstacle;
+                    }
+                }
+
+                // If hitDownForward raycast hits an enemy
+                if (hitDownForward.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
+                {
+                    currentState = state.MeetEnemy;
+                }
+            }
 
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
@@ -109,8 +135,19 @@ public class MarioFSM : MonoBehaviour
         // If AI meets an enemy
         else if (currentState == state.MeetEnemy)
         {
-            
-            
+            RandomNumberGeneration(jumpFuzzyEnd);
+
+            // decide whether to make a delayed jump or an instant jump
+            if (randomGeneratedNumber >= delayedJumpThreshold)
+            {
+                // Delay then Jump
+                DelayJump(jumpDelayTime);
+            }
+            else if (randomGeneratedNumber < delayedJumpThreshold)
+            {
+                // Trigger instant jump
+                currentState = state.Jump;
+            }
 
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
@@ -121,8 +158,19 @@ public class MarioFSM : MonoBehaviour
         // If AI meets an obstacle
         else if (currentState == state.MeetObstacle)
         {
-            currentState = state.Jump;
+            RandomNumberGeneration(jumpFuzzyEnd);
 
+            // decide whether to make a delayed jump or an instant jump
+            if (randomGeneratedNumber >= delayedJumpThreshold)
+            {
+                // Delay then Jump
+                DelayJump(jumpDelayTime);
+            }
+            else if (randomGeneratedNumber < delayedJumpThreshold)
+            {
+                // Trigger instant jump
+                currentState = state.Jump;
+            }
 
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
@@ -150,7 +198,6 @@ public class MarioFSM : MonoBehaviour
                 {
                     this.GetComponent<Mario>().ShortJump();
                 }
-                
             }
             else if (this.GetComponent<Mario>().IsGrounded() == false)
             {
@@ -173,7 +220,6 @@ public class MarioFSM : MonoBehaviour
     private void DebugRaycast()
     {
         Debug.DrawRay(transform.position, Vector2.right, Color.red);
-        Debug.DrawRay(transform.position, Vector2.up, Color.red);
         Debug.DrawRay(transform.position, Vector2.right + Vector2.up, Color.red);
         Debug.DrawRay(transform.position, Vector2.right + Vector2.down, Color.red);
     }
@@ -182,17 +228,25 @@ public class MarioFSM : MonoBehaviour
     {
         // Set random jump 
         longJumpThreshold = Mathf.RoundToInt(Random.Range(0, 100));
+        delayedJumpThreshold = Mathf.RoundToInt(Random.Range(0, 100));
+        jumpDelayTime = Random.Range(0, 3);
         jumpFuzzyEnd = 100;
 
         forwardRaycastLength = Mathf.RoundToInt(Random.Range(3, 10));
         upRightRaycastLength = Mathf.RoundToInt(Random.Range(3, 10));
         downRightRaycastLength = Mathf.RoundToInt(Random.Range(3, 10));
-        verticalRaycastLength = Mathf.RoundToInt(Random.Range(3, 10));
     }
 
     private void RandomNumberGeneration(int endNumber)
     {
         // generate random number
         randomGeneratedNumber = Random.Range(0, endNumber);
+    }
+
+    IEnumerator DelayJump(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        currentState = state.Jump;
     }
 }
