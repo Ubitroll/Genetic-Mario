@@ -61,8 +61,10 @@ public class MarioFSM : MonoBehaviour
     {
         DebugRaycast();
 
+        Vector3 offset = new Vector2(0f, 0.7f);
 
-        RaycastHit2D hitForward = Physics2D.Raycast(transform.position, Vector2.right, forwardRaycastLength);
+
+        RaycastHit2D hitForward = Physics2D.Raycast(transform.position - offset, Vector2.right, forwardRaycastLength);
         RaycastHit2D hitUpForward = Physics2D.Raycast(transform.position, Vector2.right + Vector2.up, upRightRaycastLength);
         RaycastHit2D hitDownForward = Physics2D.Raycast(transform.position, Vector2.right + Vector2.down, downRightRaycastLength);
 
@@ -219,7 +221,9 @@ public class MarioFSM : MonoBehaviour
 
     private void DebugRaycast()
     {
-        Debug.DrawRay(transform.position, Vector2.right, Color.red);
+        Vector3 offset = new Vector2(0f, 0.7f);
+
+        Debug.DrawRay(transform.position - offset, Vector2.right, Color.red);
         Debug.DrawRay(transform.position, Vector2.right + Vector2.up, Color.red);
         Debug.DrawRay(transform.position, Vector2.right + Vector2.down, Color.red);
     }
