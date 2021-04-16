@@ -7,12 +7,17 @@ public class LevelScript : MonoBehaviour
     // Variables
     public GameObject startPoint;
     public GameObject finishLine;
+    public GameObject marioPrefab;
+    public Transform parentGrid;
+
     public GameObject mario;
 
     // Start is called before the first frame update
     void Start()
     {
-       
+        mario = Instantiate(mario, startPoint.transform.position, Quaternion.identity);
+        mario.transform.parent = parentGrid;
+        mario.GetComponent<MarioFSM>().finishLine = finishLine;
     }
 
     // Update is called once per frame

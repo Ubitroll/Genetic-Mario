@@ -145,7 +145,7 @@ public class Mario : MonoBehaviour
         }
         if (Input.GetAxisRaw("Horizontal") < 0) //Similar to above
         {
-            MoveLeft();
+            //MoveLeft();
         }
         
 
@@ -178,7 +178,7 @@ public class Mario : MonoBehaviour
     {
         if(!marioDead)
         {
-            rb.velocity += Vector2.up * jumpVel;
+            rb.velocity = Vector2.up * jumpVel;
             shortJump = false;
         }
         
@@ -187,7 +187,7 @@ public class Mario : MonoBehaviour
     {
         if(!marioDead)
         {
-            rb.velocity += Vector2.up * jumpVel;
+            rb.velocity = Vector2.up * jumpVel;
             shortJump = true;
         }
     }
