@@ -6,14 +6,14 @@ using UnityEngine.U2D;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform focusTarget;
-    public Transform unfocusTarget;
+    public Transform focusTarget; //What mario does the camera focus on
+    public Transform unfocusTarget;//The overview view
 
-    public float mapY;
-    public float minX;
-    public float maxX;
-  
-    public float cameraClampOffset;
+    public float mapY; //The center of the map in focus view
+    public float minX; //The min bound of the map
+    public float maxX; //The max bound of the map
+
+    public float cameraClampOffset; //The distance from the cameraview to the edge of the screen
 
     public Vector3 offset;
     public bool focus = false;
