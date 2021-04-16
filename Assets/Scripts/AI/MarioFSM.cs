@@ -150,10 +150,21 @@ public class MarioFSM : MonoBehaviour
                 }
             }
 
+            if (currentTime >= maxTime)
+            {
+                this.GetComponent<Mario>().MarioDeath();
+            }
+
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
             {
                 currentState = state.Dead;
+            }
+
+            // If mario beats level
+            if (this.GetComponent<Mario>().levelFinished == true)
+            {
+                currentState = state.CompletedLevel;
             }
         }
         // If AI meets an enemy
@@ -176,10 +187,21 @@ public class MarioFSM : MonoBehaviour
                 currentState = state.Jump;
             }
 
+            if (currentTime >= maxTime)
+            {
+                this.GetComponent<Mario>().MarioDeath();
+            }
+
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
             {
                 currentState = state.Dead;
+            }
+
+            // If mario beats level
+            if (this.GetComponent<Mario>().levelFinished == true)
+            {
+                currentState = state.CompletedLevel;
             }
         }
         // If AI meets an obstacle
@@ -202,10 +224,21 @@ public class MarioFSM : MonoBehaviour
                 currentState = state.Jump;
             }
 
+            if (currentTime >= maxTime)
+            {
+                this.GetComponent<Mario>().MarioDeath();
+            }
+
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
             {
                 currentState = state.Dead;
+            }
+
+            // If mario beats level
+            if (this.GetComponent<Mario>().levelFinished == true)
+            {
+                currentState = state.CompletedLevel;
             }
         }
         // If the AI has to jump
@@ -236,13 +269,19 @@ public class MarioFSM : MonoBehaviour
 
             if (currentTime >= maxTime)
             {
-                
+                this.GetComponent<Mario>().MarioDeath();
             }
 
             // If Mario dies
             if (this.GetComponent<Mario>().marioDead == true)
             {
                 currentState = state.Dead;
+            }
+
+            // If mario beats level
+            if (this.GetComponent<Mario>().levelFinished == true)
+            {
+                currentState = state.CompletedLevel;
             }
         }
         // If the AI dies
@@ -295,23 +334,23 @@ public class MarioFSM : MonoBehaviour
         if (this.GetComponent<Mario>().marioDead == false)
         {
             // Track mario's current time
-            currentTime = Time.deltaTime;
+            currentTime += Time.deltaTime;
         }
         
     }
 
     private void UpdateFitnessScore()
     {
-        //// If not reached end yet use just distance travelled
-        //if(this.GetComponent<Mario>().levelFinished != true)
-        //{
-        //    fitnessScore = maxDistance - distanceToFinish; 
-        //}
-        //// Else if reached end multiply by time remaining
-        //else if (this.GetComponent<Mario>().levelFinished == true)
-        //{
-        //    fitnessScore = maxDistance * (maxTime - currentTime);
-        //}
+        // If not reached end yet use just distance travelled
+        if (this.GetComponent<Mario>().levelFinished != true)
+        {
+            fitnessScore = maxDistance - distanceToFinish;
+        }
+        // Else if reached end multiply by time remaining
+        else if (this.GetComponent<Mario>().levelFinished == true)
+        {
+            fitnessScore = maxDistance * (maxTime - currentTime);
+        }
     }
 
     IEnumerator DelayJump(float time)
