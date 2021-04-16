@@ -6,8 +6,8 @@ public class MarioFSM : MonoBehaviour
 {
     // Variables
 
-    // Using Loaded File Variables
-    public bool isUsingLoadedFiles;
+    // Check if generation 0
+    public bool isGenerationZero;
 
 
     // Raycast Variables
@@ -60,7 +60,7 @@ public class MarioFSM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (isUsingLoadedFiles == false)
+        if (isGenerationZero == true)
         {
             SetStartRandomValues();
         }
@@ -291,8 +291,12 @@ public class MarioFSM : MonoBehaviour
         // Measures distance between mario and finish line
         distanceToFinish = Vector2.Distance(this.transform.position, finishLine.transform.position);
 
-        // Track mario's current time
-        currentTime = Time.deltaTime;
+        if (this.GetComponent<Mario>().marioDead == false)
+        {
+            // Track mario's current time
+            currentTime = Time.deltaTime;
+        }
+        
     }
 
     private void UpdateFitnessScore()
