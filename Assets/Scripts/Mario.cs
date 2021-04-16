@@ -4,42 +4,43 @@ using UnityEngine;
 
 public class Mario : MonoBehaviour
 {
-    [SerializeField] private LayerMask platformLayerMask;
+    [SerializeField] private LayerMask platformLayerMask; //Platform layer mask, for collisions
 
-    public Animator animator;
+    public Animator animator; //Mario animations
 
-    public SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer; //Sprite render
 
-    public float jumpVel;
+    public float jumpVel; //The initial velocity of marios jump
 
-    public float speed;
+    public float speed; //Movement speed
 
-    public BoxCollider2D boxCollider;
-    public Rigidbody2D rb;
+    public BoxCollider2D boxCollider;//The box collider, used for colliding with enviroment
+    public Rigidbody2D rb;//Mario basic physics
 
-    public float maxSpeed;
+    public float maxSpeed;//X axis speed clamp value
 
-    public float fallMultiplier = 2.5f;
-    public float lowJumpMultiplier = 2f;
+    //This section is uses to change the gravity effect depending on whether a short or long jump is done
+    public float fallMultiplier = 2.5f; //General gravity multiplier, makes mario plummet faster when jump peak is reached
+    public float lowJumpMultiplier = 2f; //Short jumping creates a less violent plummet, used since the
 
-    public bool marioDead = false;
+    public bool marioDead = false; //Mario is dead checker
 
-    public bool shortJump = false;
+    public bool shortJump = false; //AI bool for short jumping
 
     // Start is called before the first frame update
     void Start()
     {
-        EventSystem.current.onGoombaSquished += GoombaSquished;
-        EventSystem.current.onMarioKilled += MarioDeath;
+        EventSystem.current.onGoombaSquished += GoombaSquished; //Event called when goomba hit
+        EventSystem.current.onMarioKilled += MarioDeath; //Event called when mario hit
 
     }
 
-    private void GoombaSquished(int id)
+    private void GoombaSquished(int id) //When landing on goomba, jump.
     {
         rb.velocity = Vector2.up * jumpVel;
     }
 
-    private void MarioDeath()
+    private void MarioDeath() //Upon marios death, play animation
     {
         animator.SetBool("MarioDead", true);
         rb.velocity = Vector2.up * jumpVel;
@@ -52,11 +53,11 @@ public class Mario : MonoBehaviour
         //rb = GetComponent<Rigidbody2D>();
     }
 
-    public bool IsGrounded()
+    public bool IsGrounded() //Check if mario is grounded using a box cast to detect each edge of mario on the bottom, this means that mario can be on the edge of a block and still jump
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, platformLayerMask);
         Color rayColor;
-
+        //Debug color change
         if (raycastHit.collider != null)
         {
             rayColor = Color.green;
@@ -65,14 +66,14 @@ public class Mario : MonoBehaviour
         {
             rayColor = Color.red;
         }
-
+        //Draw box rays for debugging
         Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.x, 0f), Vector2.down * (boxCollider.bounds.extents.y + 0.1f), rayColor);
         Debug.DrawRay(boxCollider.bounds.center - new Vector3(boxCollider.bounds.extents.x, 0f), Vector2.down * (boxCollider.bounds.extents.y + 0.1f), rayColor);
         Debug.DrawRay(boxCollider.bounds.center - new Vector3(0f, boxCollider.bounds.extents.y), Vector2.right * (boxCollider.bounds.extents.y + 0.1f), rayColor);
-        return raycastHit.collider != null;
+        return raycastHit.collider != null; //Only return true if a collision occurs with the platforms
     }
 
-    public bool TouchingWallLeft()
+    public bool TouchingWallLeft()//Check if mario is touching a wall on the left, similar to above
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, 0.2f, platformLayerMask);
         Color rayColor;
@@ -91,7 +92,7 @@ public class Mario : MonoBehaviour
         //Debug.Log(raycastHit.collider);
         return raycastHit.collider != null;
     }
-    public bool TouchingWallRight()
+    public bool TouchingWallRight() //Same as above but for the right side
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.right, 0.2f, platformLayerMask);
         Color rayColor;
@@ -118,66 +119,62 @@ public class Mario : MonoBehaviour
 
         if (IsGrounded() && Input.GetButtonDown("Jump")) //Check if grounded, if grounded, jump
         {
-            //ShortJump();
+            LongJump();
         }
 
         if (IsGrounded()) { animator.SetBool("Ground", true); } //Berry important pls move over xoxo
         else { animator.SetBool("Ground", false); } //Same with this one
 
-        if (rb.velocity.y < 0.001)//If player has reached peak of jump or is falling, apply the fall grav modifier.
+        if (rb.velocity.y < 0.001 )//If player has reached peak of jump or is falling, apply the fall grav modifier.
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
         }
-        else if (rb.velocity.y > 0.001 && shortJump) //If button is not held, use the short jump grav modifier
+        else if (rb.velocity.y > 0.001 && shortJump) //If short jump has been chosen, use the short jump grav modifier
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
         if (Input.GetAxisRaw("Horizontal") > 0) //If the player is not touching a wall and the player is pressing right, apply force.
         {
-            //MoveRight();
+            MoveRight();
         }
         if (Input.GetAxisRaw("Horizontal") < 0) //Similar to above
         {
-            //MoveLeft();
+            MoveLeft();
         }
 
         //This section takes the current velocity, removes the current y vel and stores it for later use.
         //Only the x vel is clamped and the stored y is applied to the clamped velocity
-        Vector2 vel = rb.velocity;
-        float jumpTemp = vel.y;
-        vel.y = 0.0f;
-        vel = Vector2.ClampMagnitude(vel, maxSpeed);
-        vel.y = jumpTemp;
-        rb.velocity = vel;
-
+        
         //Set animator var to the x vel
         animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         animator.SetFloat("VerticalSpeed", rb.velocity.y);
-
+        float clampedXVelocity = Mathf.Min(Mathf.Abs(rb.velocity.x), maxSpeed) * Mathf.Sign(rb.velocity.x);
+        float velocityY = rb.velocity.y;
+        rb.velocity = new Vector2(clampedXVelocity, velocityY);
 
     }
 
 
-    public void MoveLeft()
+    public void MoveLeft()//Move left function for AI
     {
         spriteRenderer.flipX = true;
 
         if (!TouchingWallLeft()) rb.velocity += Vector2.left * speed * Time.deltaTime;
     }
-    public void MoveRight()
+    public void MoveRight()//Move right function for AI
     {
         spriteRenderer.flipX = false;
 
         if (!TouchingWallRight()) rb.velocity += Vector2.right * speed * Time.deltaTime;
     }
-    public void LongJump()
+    public void LongJump()//Long jump funtion for AI
     {
-        rb.velocity = Vector2.up * jumpVel;
+        rb.velocity += Vector2.up * jumpVel;
         shortJump = false;
     }
-    public void ShortJump()
+    public void ShortJump()//Short jump function for AI
     {
-        rb.velocity = Vector2.up * jumpVel;
+        rb.velocity += Vector2.up * jumpVel;
         shortJump = true;
     }
 }

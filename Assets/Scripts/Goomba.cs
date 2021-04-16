@@ -40,8 +40,7 @@ public class Goomba : MonoBehaviour
 
     private void Start()
     {
-        EventSystem.current.onGoombaSquished += GoombaKilled;
-        EventSystem.current.onMarioKilled += MarioDeaded;
+        
     }
 
 
@@ -176,6 +175,7 @@ public class Goomba : MonoBehaviour
             shouldCollide = false;
             //MarioOnHead(shouldCollide);
             gameObject.layer = LayerMask.NameToLayer("dead");
+            GoombaKilled();
 
         }
 
@@ -183,10 +183,9 @@ public class Goomba : MonoBehaviour
 
     }
 
-    private void GoombaKilled(int id)
+    private void GoombaKilled()
     {
-        if (id == this.id) Destroy(gameObject, 0.7f);
-
+       Destroy(this.gameObject, 0.7f);
     }
 
     private void MarioDeaded()
@@ -195,11 +194,7 @@ public class Goomba : MonoBehaviour
         
     }
 
-    IEnumerator kill()
-    {
-
-        yield return new WaitForSeconds(0.7f);
-    }
+   
 
 
 
