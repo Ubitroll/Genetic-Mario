@@ -6,8 +6,8 @@ public class MarioFSM : MonoBehaviour
 {
     // Variables
 
-    // Using Loaded File Variables
-    public bool isUsingLoadedFiles;
+    // Check if generation 0
+    public bool isGenerationZero;
 
 
     // Raycast Variables
@@ -25,7 +25,7 @@ public class MarioFSM : MonoBehaviour
     public int floorDistance = 2;
 
     // Gentic Algorithm
-    [Header("Genetic Algorithm Settings")]
+    [Header("Genetic Algorithm Variable")]
     public float fitnessScore;
     public float maxTime = 300f;
     public float currentTime;
@@ -60,10 +60,12 @@ public class MarioFSM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (isUsingLoadedFiles == false)
+        if (isGenerationZero == true)
         {
             SetStartRandomValues();
         }
+
+        jumpFuzzyEnd = 100;
 
         // Set Rigid Body
         rigidBody = GetComponent<Rigidbody2D>();
@@ -267,9 +269,8 @@ public class MarioFSM : MonoBehaviour
     private void SetStartRandomValues()
     {
         // Set random jump thresholds
-        longJumpThreshold = Mathf.RoundToInt(Random.Range(0, 100));
-        delayedJumpThreshold = Mathf.RoundToInt(Random.Range(0, 100));
-        jumpFuzzyEnd = 100;
+        longJumpThreshold = Mathf.RoundToInt(Random.Range(1, 100));
+        delayedJumpThreshold = Mathf.RoundToInt(Random.Range(1, 100));
 
         // Set random time delays
         jumpDelayTime = Random.Range(0, 8);
@@ -291,8 +292,12 @@ public class MarioFSM : MonoBehaviour
         // Measures distance between mario and finish line
         distanceToFinish = Vector2.Distance(this.transform.position, finishLine.transform.position);
 
-        // Track mario's current time
-        currentTime = Time.deltaTime;
+        if (this.GetComponent<Mario>().marioDead == false)
+        {
+            // Track mario's current time
+            currentTime = Time.deltaTime;
+        }
+        
     }
 
     private void UpdateFitnessScore()

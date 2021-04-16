@@ -12,6 +12,7 @@ public class GenomeDataClass : MonoBehaviour
     public int genomeForwardRayLength;
     public int genomeUpRightRayLength;
     public int genomeDownRightRayLength;
+    public float genomeFitnessScore;
 
     // Default Constructor
     GenomeDataClass()
@@ -22,6 +23,18 @@ public class GenomeDataClass : MonoBehaviour
         genomeForwardRayLength = 0;
         genomeUpRightRayLength = 0;
         genomeDownRightRayLength = 0;
+        genomeFitnessScore = 0f;
+    }
+
+    public GenomeDataClass(int delayedThreshold, int longThreshold, int delayedTime, int forwardRayLength, int upRightRayLength, int downRightRayLength, float theFitnessScore)
+    {
+        genomeDelayedThreshold = delayedThreshold;
+        genomeLongThreshold = longThreshold;
+        genomeDelayedTime = delayedTime;
+        genomeForwardRayLength = forwardRayLength;
+        genomeUpRightRayLength = upRightRayLength;
+        genomeDownRightRayLength = downRightRayLength;
+        genomeFitnessScore = theFitnessScore;
     }
 
     public GenomeDataClass(int delayedThreshold, int longThreshold, int delayedTime, int forwardRayLength, int upRightRayLength, int downRightRayLength)
@@ -35,69 +48,80 @@ public class GenomeDataClass : MonoBehaviour
     }
 
     // Delayed Threshold Getter and Setter
-    public int getDelayedThreshold()
+    public int GetDelayedThreshold()
     {
         return genomeDelayedThreshold;
     }
 
-    public void setDelayedThreshold( int delayedThreshold)
+    public void SetDelayedThreshold( int delayedThreshold)
     {
         genomeDelayedThreshold = delayedThreshold;
     }
 
     // Long Jump Threshold Getter and Setter
-    public int getLongJumpThreshold()
+    public int GetLongJumpThreshold()
     {
         return genomeLongThreshold;
     }
 
-    public void setLongJumpThreshold(int longJumpThreshold)
+    public void SetLongJumpThreshold(int longJumpThreshold)
     {
         genomeLongThreshold = longJumpThreshold;
     }
 
     // Delayed Time Getter and Setter
-    public int getDelayedtime()
+    public int GetDelayedtime()
     {
         return genomeDelayedTime;
     }
 
-    public void setDelayedTime(int delayedTime)
+    public void SetDelayedTime(int delayedTime)
     {
         genomeDelayedTime = delayedTime;
     }
 
     // Forward Raycast Length Getter and Setter
-    public int getForwardRaycastLength()
+    public int GetForwardRaycastLength()
     {
         return genomeForwardRayLength;
     }
 
-    public void setForwardRaycastLength(int forwardRaycastLength)
+    public void SetForwardRaycastLength(int forwardRaycastLength)
     {
         genomeForwardRayLength = forwardRaycastLength;
     }
 
     // Forward Up Raycast Length Getter and Setter
-    public int getForwardUpRaycastLength()
+    public int GetForwardUpRaycastLength()
     {
         return genomeUpRightRayLength;
     }
 
-    public void setForwardUpRaycastLength(int forwardUpRaycastLength)
+    public void SetForwardUpRaycastLength(int forwardUpRaycastLength)
     {
         genomeUpRightRayLength = forwardUpRaycastLength;
     }
 
     // Forward Down Raycast Length Getter and Setter
-    public int getForwardDownRaycastLength()
+    public int GetForwardDownRaycastLength()
     {
         return genomeDownRightRayLength;
     }
 
-    public void setForwardDownRayacastLength(int forwardDownRaycastLength)
+    public void SetForwardDownRayacastLength(int forwardDownRaycastLength)
     {
         genomeDownRightRayLength = forwardDownRaycastLength;
+    }
+
+    // Fitness Score Getter and Setter
+    public float GetFitnessScore()
+    {
+        return genomeFitnessScore;
+    }
+
+    public void SetFitnessScore(float theFitnessScore)
+    {
+        genomeFitnessScore = theFitnessScore;
     }
 
     // Method to get full gome output as a string
