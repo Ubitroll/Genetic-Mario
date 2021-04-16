@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -11,10 +12,10 @@ public class FSMManager : MonoBehaviour
     // Lists
     List<GameObject> mapList;
 
-
-
-    public List<GenomeDataClass> currentGenerationGenomeArray;
-    public List<GenomeDataClass> bestSeedMarioGenomeArray;
+    
+    public List<GenomeDataClass> currentGenerationGenomeArray = new List<GenomeDataClass>();
+    public List<GenomeDataClass> nextGenerationGenomeArray = new List<GenomeDataClass>();
+    public List<GenomeDataClass> bestSeedMarioGenomeArray = new List<GenomeDataClass>();
 
     // Map to be istantiated
     public GameObject mapPrefab;
@@ -36,9 +37,19 @@ public class FSMManager : MonoBehaviour
     [Header("XML FILE WRITING VARIABLE")]
     public string genomeFileName = "GenomeFile";
 
+    // Genetic Algorithm Variables
+    [Header("Genetic Algorithm Variables")]
+    private int numberOfMarios;
+    public GenomeDataClass firstParent;
+    public GenomeDataClass secondParent;
+    public int mutationChance = 15;
+
     // Start is called before the first frame update
     void Start()
     {
+        // Number of marios is grid length times grid height
+        numberOfMarios = gridSizeX * gridSizeX;
+
         // Gets the tilemap of the level for calculations
         Tilemap tilemap = mapPrefab.GetComponent<Tilemap>();
         var bounds = tilemap.cellBounds;
@@ -63,7 +74,245 @@ public class FSMManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If current generation saved in list is equal to the total number of marios
+        // This only runs once all the marios have either completed the level or died
+        if (currentGenerationGenomeArray.Count == numberOfMarios)
+        {
+            // Sort the genome list to have best first 
+            SortGenome();
+
+            for (int i=0; i < currentGenerationGenomeArray.Count; i++)
+            {
+                // If best seed save to best seed array
+                if (i == 0)
+                {
+                    bestSeedMarioGenomeArray.Add(currentGenerationGenomeArray[i]);
+                }
+
+                // Save to next generation array for Genetic Alogirthm functions
+                nextGenerationGenomeArray.Add(currentGenerationGenomeArray[i]);
+            }
+
+            // Clear current gen once not needed for next generation
+            currentGenerationGenomeArray.Clear();
+        }
+
+
+    }
+
+    private void SortGenome()
+    {
+        // Sort the list from lowest to highest
+        currentGenerationGenomeArray = currentGenerationGenomeArray.OrderBy(fitness => fitness.genomeFitnessScore).ToList();
+
+        // Reverse list so best is first
+        currentGenerationGenomeArray.Reverse();
+    }
+
+    
+    public void Crossover(int firstParentIndex, int secondParentIndex)
+    {
+        // Set parents based on index
+        firstParent = nextGenerationGenomeArray[firstParentIndex];
+        secondParent = nextGenerationGenomeArray[secondParentIndex];
+
+        // Create temps for temp storage
+        int tempDelayedThreshold = 0;
+        int tempLongThreshold = 0;
+        int tempDelayedTime = 0;
+        int tempForwardRayLength = 0;
+        int tempUpRightRayLength = 0;
+        int tempDownRightRayLength = 0; 
+
+        int chance;
+
+        // for each gene
+        for (int i = 0; i < 6; i++)
+        {
+            // Pick which parent to take gene from
+            if (i == 0)
+            {
+                // Check if mutates
+                if (CheckForMutation())
+                {
+                    // If mutates
+                    tempDelayedThreshold = GenerateRandomNumber(1, 100);
+                }
+                // If not crossover like normal
+                else
+                {
+                    // Generate chance
+                    chance = GenerateRandomNumber(1 , 100);
+
+                    // Pick which parent to take gene from
+                    if (chance > 50)
+                    {
+                        tempDelayedThreshold = firstParent.GetDelayedThreshold();
+                    }
+                    else
+                    {
+                        tempDelayedThreshold = secondParent.GetDelayedThreshold();
+                    }
+                }
+            }
+            // Pick which parent to take gene from
+            if (i == 1)
+            {
+                // Check if mutates
+                if (CheckForMutation())
+                {
+                    // If mutates
+                    tempLongThreshold = GenerateRandomNumber(1, 100);
+                }
+                // If not crossover like normal
+                else
+                {
+                    // Generate chance
+                    chance = GenerateRandomNumber(1, 100);
+
+                    // Pick which parent to take gene from
+                    if (chance > 50)
+                    {
+                        tempLongThreshold = firstParent.GetLongJumpThreshold();
+                    }
+                    else
+                    {
+                        tempLongThreshold = secondParent.GetLongJumpThreshold();
+                    }
+                }
+            }
+            // Pick which parent to take gene from
+            if (i == 2)
+            {
+                // Check if mutates
+                if (CheckForMutation())
+                {
+                    // If mutates
+                    tempDelayedTime = GenerateRandomNumber(0, 3);
+                }
+                // If not crossover like normal
+                else
+                {
+                    // Generate chance
+                    chance = GenerateRandomNumber(1, 100);
+
+                    // Pick which parent to take gene from
+                    if (chance > 50)
+                    {
+                        tempDelayedTime = firstParent.GetDelayedtime();
+                    }
+                    else
+                    {
+                        tempDelayedTime = secondParent.GetDelayedtime();
+                    }
+                }
+            }
+            // Pick which parent to take gene from
+            if (i == 3)
+            {
+                // Check if mutates
+                if (CheckForMutation())
+                {
+                    // If mutates
+                    tempForwardRayLength = GenerateRandomNumber(1, 100);
+                }
+                // If not crossover like normal
+                else
+                {
+                    // Generate chance
+                    chance = GenerateRandomNumber(3, 10);
+
+                    // Pick which parent to take gene from
+                    if (chance > 50)
+                    {
+                        tempForwardRayLength = firstParent.GetForwardRaycastLength();
+                    }
+                    else
+                    {
+                        tempForwardRayLength = secondParent.GetForwardRaycastLength();
+                    }
+                }
+            }
+            // Pick which parent to take gene from
+            if (i == 4)
+            {
+                // Check if mutates
+                if (CheckForMutation())
+                {
+                    // If mutates
+                    tempUpRightRayLength = GenerateRandomNumber(3, 10);
+                }
+                // If not crossover like normal
+                else
+                {
+                    // Generate chance
+                    chance = GenerateRandomNumber(1, 100);
+
+                    // Pick which parent to take gene from
+                    if (chance > 50)
+                    {
+                        tempUpRightRayLength = firstParent.GetForwardUpRaycastLength();
+                    }
+                    else
+                    {
+                        tempUpRightRayLength = secondParent.GetForwardUpRaycastLength();
+                    }
+                }
+            }
+            // Pick which parent to take gene from
+            if (i == 5)
+            {
+                // Check if mutates
+                if (CheckForMutation())
+                {
+                    // If mutates
+                    tempDownRightRayLength = GenerateRandomNumber(3, 10);
+                }
+                // If not crossover like normal
+                else
+                {
+                    // Generate chance
+                    chance = GenerateRandomNumber(1, 100);
+
+                    // Pick which parent to take gene from
+                    if (chance > 50)
+                    {
+                        tempDownRightRayLength = firstParent.GetForwardDownRaycastLength();
+                    }
+                    else
+                    {
+                        tempDownRightRayLength = secondParent.GetForwardDownRaycastLength();
+                    }
+                }
+            }
+        }
+
+        GenomeDataClass newChild = new GenomeDataClass(tempDelayedThreshold, tempLongThreshold, tempDelayedTime ,tempForwardRayLength, tempUpRightRayLength, tempDownRightRayLength);
+
         
+        nextGenerationGenomeArray.Add(newChild);
+    }
+
+    public bool CheckForMutation()
+    {
+        int chance = Mathf.RoundToInt(Random.Range(1, 100));
+
+        // See if mutation occurs
+        if (chance <= mutationChance)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public int GenerateRandomNumber(int startNumber, int endNumber)
+    {
+        int randomVariable = Mathf.RoundToInt(Random.Range(startNumber, endNumber));
+
+        return randomVariable;
     }
 
     public void SaveGenomeToXMLFile(string fileName)

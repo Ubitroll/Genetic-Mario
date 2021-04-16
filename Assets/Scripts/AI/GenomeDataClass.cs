@@ -12,7 +12,7 @@ public class GenomeDataClass : MonoBehaviour
     public int genomeForwardRayLength;
     public int genomeUpRightRayLength;
     public int genomeDownRightRayLength;
-    public float fitnessScore;
+    public float genomeFitnessScore;
 
     // Default Constructor
     GenomeDataClass()
@@ -23,7 +23,7 @@ public class GenomeDataClass : MonoBehaviour
         genomeForwardRayLength = 0;
         genomeUpRightRayLength = 0;
         genomeDownRightRayLength = 0;
-        fitnessScore = 0f;
+        genomeFitnessScore = 0f;
     }
 
     public GenomeDataClass(int delayedThreshold, int longThreshold, int delayedTime, int forwardRayLength, int upRightRayLength, int downRightRayLength, float theFitnessScore)
@@ -34,7 +34,17 @@ public class GenomeDataClass : MonoBehaviour
         genomeForwardRayLength = forwardRayLength;
         genomeUpRightRayLength = upRightRayLength;
         genomeDownRightRayLength = downRightRayLength;
-        fitnessScore = theFitnessScore;
+        genomeFitnessScore = theFitnessScore;
+    }
+
+    public GenomeDataClass(int delayedThreshold, int longThreshold, int delayedTime, int forwardRayLength, int upRightRayLength, int downRightRayLength)
+    {
+        genomeDelayedThreshold = delayedThreshold;
+        genomeLongThreshold = longThreshold;
+        genomeDelayedTime = delayedTime;
+        genomeForwardRayLength = forwardRayLength;
+        genomeUpRightRayLength = upRightRayLength;
+        genomeDownRightRayLength = downRightRayLength;
     }
 
     // Delayed Threshold Getter and Setter
@@ -106,12 +116,12 @@ public class GenomeDataClass : MonoBehaviour
     // Fitness Score Getter and Setter
     public float GetFitnessScore()
     {
-        return fitnessScore;
+        return genomeFitnessScore;
     }
 
     public void SetFitnessScore(float theFitnessScore)
     {
-        fitnessScore = theFitnessScore;
+        genomeFitnessScore = theFitnessScore;
     }
 
     // Method to get full gome output as a string
