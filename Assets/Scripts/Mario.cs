@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Mario : MonoBehaviour
 {
-    [SerializeField] private LayerMask platformLayerMask; //Platform layer mask, for collisions
+    [SerializeField] private LayerMask platformLayerMask, enemyLayerMask; //Platform layer mask, for collisions
 
     public Animator animator; //Mario animations
+
+    public List<int> funny = new List<int>();
 
     public SpriteRenderer spriteRenderer; //Sprite render
 
@@ -27,23 +29,24 @@ public class Mario : MonoBehaviour
 
     public bool shortJump = false; //AI bool for short jumping
 
+    public bool levelFinished = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        EventSystem.current.onGoombaSquished += GoombaSquished; //Event called when goomba hit
-        EventSystem.current.onMarioKilled += MarioDeath; //Event called when mario hit
-
+  
     }
 
-    private void GoombaSquished(int id) //When landing on goomba, jump.
+    public void GoombaSquished() //When landing on goomba, jump.
     {
         rb.velocity = Vector2.up * jumpVel;
     }
 
-    private void MarioDeath() //Upon marios death, play animation
+    public void MarioDeath() //Upon marios death, play animation
     {
         animator.SetBool("MarioDead", true);
-        rb.velocity = Vector2.up * jumpVel;
+        rb.velocity = Vector2.zero;
+        rb.bodyType = RigidbodyType2D.Kinematic;
         gameObject.layer = 10;
         marioDead = true;
     }
@@ -73,25 +76,6 @@ public class Mario : MonoBehaviour
         return raycastHit.collider != null; //Only return true if a collision occurs with the platforms
     }
 
-    public bool TouchingWallLeft()//Check if mario is touching a wall on the left, similar to above
-    {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, 0.2f, platformLayerMask);
-        Color rayColor;
-
-        if (raycastHit.collider != null)
-        {
-            rayColor = Color.green;
-        }
-        else
-        {
-            rayColor = Color.red;
-        }
-
-        Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.y, 0f), Vector2.left * (boxCollider.bounds.extents.y + 0.2f), rayColor);
-
-        //Debug.Log(raycastHit.collider);
-        return raycastHit.collider != null;
-    }
     public bool TouchingWallRight() //Same as above but for the right side
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.right, 0.2f, platformLayerMask);
@@ -111,6 +95,28 @@ public class Mario : MonoBehaviour
         //Debug.Log(raycastHit.collider);
         return raycastHit.collider != null;
     }
+    public bool TouchingWallLeft()//Check if mario is touching a wall on the left, similar to above
+    {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, 0.2f, platformLayerMask);
+        Color rayColor;
+
+        if (raycastHit.collider != null)
+        {
+            rayColor = Color.green;
+        }
+        else
+        {
+            rayColor = Color.red;
+        }
+
+        Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.y, 0f), Vector2.left * (boxCollider.bounds.extents.y + 0.2f), rayColor);
+
+        //Debug.Log(raycastHit.collider);
+        return raycastHit.collider != null;
+    }
+   
+
+    
 
     // Update is called once per frame
     void Update()
@@ -141,6 +147,7 @@ public class Mario : MonoBehaviour
         {
             MoveLeft();
         }
+        
 
         //This section takes the current velocity, removes the current y vel and stores it for later use.
         //Only the x vel is clamped and the stored y is applied to the clamped velocity
@@ -159,22 +166,37 @@ public class Mario : MonoBehaviour
     {
         spriteRenderer.flipX = true;
 
-        if (!TouchingWallLeft()) rb.velocity += Vector2.left * speed * Time.deltaTime;
+        if (!TouchingWallLeft() && !marioDead) rb.velocity += Vector2.left * speed * Time.deltaTime;
     }
     public void MoveRight()//Move right function for AI
     {
         spriteRenderer.flipX = false;
 
-        if (!TouchingWallRight()) rb.velocity += Vector2.right * speed * Time.deltaTime;
+        if (!TouchingWallRight() && !marioDead) rb.velocity += Vector2.right * speed * Time.deltaTime;
     }
     public void LongJump()//Long jump funtion for AI
     {
-        rb.velocity += Vector2.up * jumpVel;
-        shortJump = false;
+        if(!marioDead)
+        {
+            rb.velocity += Vector2.up * jumpVel;
+            shortJump = false;
+        }
+        
     }
     public void ShortJump()//Short jump function for AI
     {
-        rb.velocity += Vector2.up * jumpVel;
-        shortJump = true;
+        if(!marioDead)
+        {
+            rb.velocity += Vector2.up * jumpVel;
+            shortJump = true;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer ==  LayerMask.NameToLayer("finish"))
+        {
+            levelFinished = true;
+        }
     }
 }

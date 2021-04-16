@@ -74,7 +74,7 @@ public class Goomba : MonoBehaviour
 
             if (raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("player"))
             {
-                EventSystem.current.MarioKilled();
+                raycastHit.transform.gameObject.GetComponent<Mario>().MarioDeath();
             }
         }
         else
@@ -100,7 +100,7 @@ public class Goomba : MonoBehaviour
             }
             if (raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("player"))
             {
-                EventSystem.current.MarioKilled();
+                raycastHit.transform.gameObject.GetComponent<Mario>().MarioDeath();
             }
         }
         else
@@ -123,6 +123,7 @@ public class Goomba : MonoBehaviour
             if (raycastHit.collider != null)
             {
                 rayColor = Color.green;
+                raycastHit.collider.transform.gameObject.GetComponent<Mario>().GoombaSquished();
             }
             else
             {
@@ -170,11 +171,10 @@ public class Goomba : MonoBehaviour
         if (MarioOnHead(shouldCollide))
         {
             heDead = true;
-            EventSystem.current.GoombaSquished(id);
+            gameObject.layer = LayerMask.NameToLayer("dead");
             animator.SetBool("Dead", true);
             shouldCollide = false;
             //MarioOnHead(shouldCollide);
-            gameObject.layer = LayerMask.NameToLayer("dead");
             GoombaKilled();
 
         }
