@@ -9,7 +9,15 @@ public class OnMouseOver : MonoBehaviour
     public Color highlightColor;
     public Tilemap tilemap;
     public Transform playerTransform;
-    
+
+    private void Start()
+    {
+        
+    }
+    private void Update()
+    {
+        playerTransform = this.gameObject.GetComponent<LevelScript>().mario.transform;
+    }
 
     void OnMouseEnter()
     {
