@@ -15,11 +15,11 @@ E:/Github/AI/Genetic-Mario/Genetic-Mario
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-53125
+65010
 Successfully changed project path to: E:/Github/AI/Genetic-Mario/Genetic-Mario
 E:/Github/AI/Genetic-Mario/Genetic-Mario
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 29.81 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 39.09 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.0f1 (c7b5465681fb)
 [Subsystems] Discovering subsystems at path E:/Unity Editor Folder/2020.3.0f1/Editor/Data/Resources/UnitySubsystems
@@ -35,114 +35,80 @@ Initialize mono
 Mono path[0] = 'E:/Unity Editor Folder/2020.3.0f1/Editor/Data/Managed'
 Mono path[1] = 'E:/Unity Editor Folder/2020.3.0f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'E:/Unity Editor Folder/2020.3.0f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56160
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56000
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: E:/Unity Editor Folder/2020.3.0f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: E:/Unity Editor Folder/2020.3.0f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
 Register platform support module: E:/Unity Editor Folder/2020.3.0f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
 Register platform support module: E:/Unity Editor Folder/2020.3.0f1/Editor/Data/PlaybackEngines/LuminSupport/UnityEditor.Lumin.Extensions.dll
-Registered in 0.002354 seconds.
+Registered in 0.006453 seconds.
 Native extension for Lumin target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 34.92 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 89.72 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Invoked RoslynAnalysisRunner static constructor.
 RoslynAnalysisRunner will not be running.
 RoslynAnalysisRunner has terminated.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.795 seconds
+- Completed reload, in  2.161 seconds
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.001216 seconds.
+Registered in 0.001385 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for Lumin target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 36.25 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 40.85 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Invoked RoslynAnalysisRunner static constructor.
 RoslynAnalysisRunner will not be running.
 RoslynAnalysisRunner has terminated.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.383 seconds
+- Completed reload, in  1.175 seconds
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.08 seconds
-Refreshing native plugins compatible for Editor in 0.55 ms, found 1 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.10 seconds
+Refreshing native plugins compatible for Editor in 0.78 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 1814 Unused Serialized files (Serialized files now loaded: 0)
 System memory in use before: 84.8 MB.
 System memory in use after: 84.7 MB.
 
 Unloading 24 unused Assets to reduce memory usage. Loaded Objects now: 2257.
-Total: 1.791000 ms (FindLiveObjects: 0.181700 ms CreateObjectMapping: 0.056600 ms MarkObjects: 1.442000 ms  DeleteObjects: 0.109800 ms)
+Total: 3.575000 ms (FindLiveObjects: 0.226900 ms CreateObjectMapping: 0.078300 ms MarkObjects: 2.957400 ms  DeleteObjects: 0.310200 ms)
 
 ========================================================================
 Received Import Request.
   path: Assets/Scripts/AI/MarioFSM.cs
   artifactKey: Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/AI/MarioFSM.cs using Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b2ddf94b22756283d8fce8517744228d') in 0.537610 seconds
-  Import took 0.540208 seconds .
+Start importing Assets/Scripts/AI/MarioFSM.cs using Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '117aac4b50b78611006280138d3e6068') in 0.037044 seconds
+  Import took 0.065367 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 238.128843 seconds.
+  Time since last request: 95.234723 seconds.
   path: Assets/Scripts/AI/MarioFSM.cs
   artifactKey: Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/AI/MarioFSM.cs using Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0416c27770dddc2eabbf455433df54ae') in 0.003000 seconds
-  Import took 0.006287 seconds .
+Start importing Assets/Scripts/AI/MarioFSM.cs using Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '39d1b9e0f80daee632879379cdfe3509') in 0.004898 seconds
+  Import took 0.084607 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 16.218612 seconds.
+  Time since last request: 19.300888 seconds.
   path: Assets/Scripts/AI/MarioFSM.cs
   artifactKey: Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/AI/MarioFSM.cs using Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b41df79ded3ebf17f617a2c87ef4e87a') in 0.002359 seconds
-  Import took 0.004774 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 170.690311 seconds.
-  path: Assets/Scripts/AI/MarioFSM.cs
-  artifactKey: Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/AI/MarioFSM.cs using Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '107ee645b4ce15b8605508abbd364db2') in 0.003960 seconds
-  Import took 0.008438 seconds .
+Start importing Assets/Scripts/AI/MarioFSM.cs using Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dfaccd46d2b8721a56c68c96dcdce1f7') in 0.006704 seconds
+  Import took 0.028232 seconds .
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.001436 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for Lumin target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 0.35 ms, found 1 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Invoked RoslynAnalysisRunner static constructor.
-RoslynAnalysisRunner will not be running.
-RoslynAnalysisRunner has terminated.
-Mono: successfully reloaded assembly
-- Completed reload, in  0.794 seconds
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.34 ms, found 1 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 1809 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 84.7 MB.
-System memory in use after: 84.7 MB.
-
-Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 2261.
-Total: 1.606200 ms (FindLiveObjects: 0.187100 ms CreateObjectMapping: 0.061100 ms MarkObjects: 1.266100 ms  DeleteObjects: 0.090900 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.001138 seconds.
+Registered in 0.001061 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for Lumin target not found
 Native extension for WindowsStandalone target not found
@@ -154,23 +120,15 @@ Invoked RoslynAnalysisRunner static constructor.
 RoslynAnalysisRunner will not be running.
 RoslynAnalysisRunner has terminated.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.274 seconds
+- Completed reload, in  1.028 seconds
 Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.36 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 0.32 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 1809 Unused Serialized files (Serialized files now loaded: 0)
 System memory in use before: 84.8 MB.
-System memory in use after: 84.8 MB.
+System memory in use after: 84.7 MB.
 
-Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 2265.
-Total: 1.596600 ms (FindLiveObjects: 0.158500 ms CreateObjectMapping: 0.051800 ms MarkObjects: 1.261900 ms  DeleteObjects: 0.123100 ms)
-
-========================================================================
-Received Import Request.
-  Time since last request: 7743.427048 seconds.
-  path: Assets/Scripts/AI/MarioFSM.cs
-  artifactKey: Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/AI/MarioFSM.cs using Guid(3ee26a21618a9b74bbac39617635edc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e351638b209a85746474bb24b3fa4cb4') in 0.006907 seconds
-  Import took 0.014751 seconds .
+Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 2261.
+Total: 1.843400 ms (FindLiveObjects: 0.205900 ms CreateObjectMapping: 0.066900 ms MarkObjects: 1.473300 ms  DeleteObjects: 0.096100 ms)
 
 AssetImportWorkerClient::OnTransportError - code=2 error=End of file
