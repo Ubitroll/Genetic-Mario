@@ -9,31 +9,38 @@ public class MarioFSM : MonoBehaviour
     // Using Loaded File Variables
     public bool isUsingLoadedFiles;
 
+
     // Raycast Variables
     [SerializeField] private LayerMask platformLayerMask;
     [SerializeField] private LayerMask enemyLayerMask;
-    private int forwardRaycastLength;
-    private int upRightRaycastLength;
-    private int downRightRaycastLength;
+    
     Rigidbody2D rigidBody;
 
     // Fuzzy logic Variables
     // Make new Random
     private float randomGeneratedNumber;
-    public float jumpDelayTime;
-    public int delayedJumpThreshold;
-    public int longJumpThreshold;
+    
+    
     public int jumpFuzzyEnd;
     public int floorDistance = 2;
 
     // Gentic Algorithm
+    [Header("Genetic Algorithm Settings")]
     public float fitnessScore;
     public float maxTime = 300f;
     public float currentTime;
     public float maxDistance;
     public float distanceToFinish;
     public GameObject finishLine;
-    
+
+    // Genome Variables
+    [Header("Genome Variables")]
+    public int delayedJumpThreshold;
+    public int longJumpThreshold;
+    public int jumpDelayTime;
+    public int forwardRaycastLength;
+    public int upRightRaycastLength;
+    public int downRightRaycastLength;
 
     // AI states
     protected enum state
@@ -225,9 +232,9 @@ public class MarioFSM : MonoBehaviour
                 currentState = state.WalkRight;
             }
 
-            if (currentTime => maxTime)
+            if (currentTime >= maxTime)
             {
-                // Kill mario
+                
             }
 
             // If Mario dies
@@ -284,24 +291,22 @@ public class MarioFSM : MonoBehaviour
         // Measures distance between mario and finish line
         distanceToFinish = Vector2.Distance(this.transform.position, finishLine.transform.position);
 
-        
-
-        
+        // Track mario's current time
         currentTime = Time.deltaTime;
     }
 
     private void UpdateFitnessScore()
     {
-        // If not reached end yet use just distance travelled
-        if(this.GetComponent<Mario>().levelFinished != true)
-        {
-            fitnessScore = maxDistance - distanceToFinish; 
-        }
-        // Else if reached end multiply by time remaining
-        else if (this.GetComponent<Mario>().levelFinished == true)
-        {
-            fitnessScore = maxDistance * (maxTime - currentTime);
-        }
+        //// If not reached end yet use just distance travelled
+        //if(this.GetComponent<Mario>().levelFinished != true)
+        //{
+        //    fitnessScore = maxDistance - distanceToFinish; 
+        //}
+        //// Else if reached end multiply by time remaining
+        //else if (this.GetComponent<Mario>().levelFinished == true)
+        //{
+        //    fitnessScore = maxDistance * (maxTime - currentTime);
+        //}
     }
 
     IEnumerator DelayJump(float time)
