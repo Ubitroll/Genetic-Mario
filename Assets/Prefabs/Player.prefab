@@ -161,7 +161,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.923011}
+  m_Size: {x: 0.85, y: 1.923011}
   m_EdgeRadius: 0
 --- !u!50 &2964755442365154851
 Rigidbody2D:
@@ -207,7 +207,7 @@ MonoBehaviour:
   floorDistance: 2
   hasRan: 0
   fitnessScore: 0
-  maxTime: 5
+  maxTime: 60
   currentTime: 0
   maxDistance: 0
   distanceToFinish: 0

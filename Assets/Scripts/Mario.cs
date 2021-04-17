@@ -43,12 +43,7 @@ public class Mario : MonoBehaviour
     {
         rb.velocity = Vector2.up * jumpVel;
     }
-
-    public void MarioReset()
-    {
-
-    }
-
+    
     public void MarioDeath() //Used when a goomba collides with mario
     {
         animator.SetBool("MarioDead", true);//Animatior bool
@@ -204,6 +199,10 @@ public class Mario : MonoBehaviour
         if(collision.gameObject.layer ==  LayerMask.NameToLayer("finish"))
         {
             levelFinished = true;
+        }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("killbox"))
+        {
+            MarioDeath();
         }
     }
 }
