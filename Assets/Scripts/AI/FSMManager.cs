@@ -43,6 +43,7 @@ public class FSMManager : MonoBehaviour
     public GenomeDataClass firstParent;
     public GenomeDataClass secondParent;
     public int mutationChance = 15;
+    public int generation = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -50,25 +51,7 @@ public class FSMManager : MonoBehaviour
         // Number of marios is grid length times grid height
         numberOfMarios = gridSizeX * gridSizeX;
 
-        // Gets the tilemap of the level for calculations
-        Tilemap tilemap = mapPrefab.GetComponent<Tilemap>();
-        var bounds = tilemap.cellBounds;
-        xBound = (Mathf.Abs(bounds.xMax) + Mathf.Abs(bounds.xMin));
-        yBound = (Mathf.Abs(bounds.yMax) + Mathf.Abs(bounds.yMin));
-
-        // For each grid cell
-        for (int y = 0; y < gridSizeY; y++)
-        {
-            for (int x = 0; x < gridSizeX; x++)
-            {
-                // Instantiate level
-                Vector2 pos = new Vector2(originPos.x + (x * xBound), originPos.y + (y * yBound));
-                var newMap = Instantiate(mapPrefab, pos, Quaternion.identity);
-                newMap.transform.parent = parentGrid;
-
-                mapList.Add(newMap);
-            }
-        }
+        InstantiateMaps();
     }
 
     // Update is called once per frame
@@ -93,6 +76,8 @@ public class FSMManager : MonoBehaviour
                 nextGenerationGenomeArray.Add(currentGenerationGenomeArray[i]);
             }
 
+
+
             // Clear current gen once not needed for next generation
             currentGenerationGenomeArray.Clear();
         }
@@ -109,6 +94,10 @@ public class FSMManager : MonoBehaviour
         currentGenerationGenomeArray.Reverse();
     }
 
+    private void Selection()
+    {
+
+    }
     
     public void Crossover(int firstParentIndex, int secondParentIndex)
     {
@@ -308,11 +297,54 @@ public class FSMManager : MonoBehaviour
         }
     }
 
+    private void AssignData()
+    {
+        // If in the first generation
+        if (generation == 0)
+        {
+            return;
+        }
+        // If
+        else
+        {
+            // Itterate through map list
+            for (int i = 0; i < mapList.Count; i++)
+            {
+                mapList[i].GetComponent<LevelScript>().LoadMarioGenome(nextGenerationGenomeArray[i]);
+            }
+        }
+    }
+
     public int GenerateRandomNumber(int startNumber, int endNumber)
     {
         int randomVariable = Mathf.RoundToInt(Random.Range(startNumber, endNumber));
 
         return randomVariable;
+    }
+
+    private void InstantiateMaps()
+    {
+        // Gets the tilemap of the level for calculations
+        Tilemap tilemap = mapPrefab.GetComponent<Tilemap>();
+        var bounds = tilemap.cellBounds;
+        xBound = (Mathf.Abs(bounds.xMax) + Mathf.Abs(bounds.xMin));
+        yBound = (Mathf.Abs(bounds.yMax) + Mathf.Abs(bounds.yMin));
+
+        // For each grid cell
+        for (int y = 0; y < gridSizeY; y++)
+        {
+            for (int x = 0; x < gridSizeX; x++)
+            {
+                // Instantiate level
+                Vector2 pos = new Vector2(originPos.x + (x * xBound), originPos.y + (y * yBound));
+                var newMap = Instantiate(mapPrefab, pos, Quaternion.identity);
+                newMap.transform.parent = parentGrid;
+
+                mapList.Add(newMap);
+
+                newMap.GetComponent<LevelScript>().SpawnMario();
+            }
+        }
     }
 
     public void SaveGenomeToXMLFile(string fileName)

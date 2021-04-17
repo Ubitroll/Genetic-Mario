@@ -15,9 +15,7 @@ public class LevelScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mario = Instantiate(mario, startPoint.transform.position, Quaternion.identity);
-        mario.transform.parent = parentGrid;
-        mario.GetComponent<MarioFSM>().finishLine = finishLine;
+        SpawnMario();
     }
 
     // Update is called once per frame
@@ -27,22 +25,24 @@ public class LevelScript : MonoBehaviour
     }
 
     // Function to spawn a mario
-    private void SpawnMario()
+    public void SpawnMario()
     {
-        Instantiate(mario, startPoint.transform);
+        mario = Instantiate(mario, startPoint.transform.position, Quaternion.identity); //Spawn mario at set pos
+        mario.transform.parent = parentGrid; //Set mario to be a child of the map
+        mario.GetComponent<MarioFSM>().finishLine = finishLine;
     }
 
     // Function to load marios stats
-    private void LoadMarioGenome(int delayedThreshold, int longThreshold, int delayedTime, int forwardRayLength, int upRightRayLength, int downRightRayLength)
+    public void LoadMarioGenome(GenomeDataClass marioGenes)
     {
         mario.GetComponent<MarioFSM>().isGenerationZero = false;
 
-        mario.GetComponent<MarioFSM>().delayedJumpThreshold = delayedThreshold;
-        mario.GetComponent<MarioFSM>().longJumpThreshold = longThreshold;
-        mario.GetComponent<MarioFSM>().jumpDelayTime = delayedTime;
-        mario.GetComponent<MarioFSM>().forwardRaycastLength = forwardRayLength;
-        mario.GetComponent<MarioFSM>().upRightRaycastLength = upRightRayLength;
-        mario.GetComponent<MarioFSM>().downRightRaycastLength = downRightRayLength;
+        mario.GetComponent<MarioFSM>().delayedJumpThreshold = marioGenes.GetDelayedThreshold();
+        mario.GetComponent<MarioFSM>().longJumpThreshold = marioGenes.GetLongJumpThreshold();
+        mario.GetComponent<MarioFSM>().jumpDelayTime = marioGenes.GetDelayedtime();
+        mario.GetComponent<MarioFSM>().forwardRaycastLength = marioGenes.GetForwardRaycastLength();
+        mario.GetComponent<MarioFSM>().upRightRaycastLength = marioGenes.GetForwardUpRaycastLength();
+        mario.GetComponent<MarioFSM>().downRightRaycastLength = marioGenes.GetForwardDownRaycastLength();
 
     }
 }
