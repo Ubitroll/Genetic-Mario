@@ -145,243 +145,122 @@ public class FSMManager : MonoBehaviour
                 // Pick which parent to take gene from
                 if (chance > 50)
                 {
-
-                    // Check if mutates
-                    if (CheckForMutation())
-                    {
-                        // Check which mutation will occur
-
-                        chance = GenerateRandomNumber(1, 100);
-
-                        if (chance <= 33)
-                        {
-                            // If mutates randomisation
-                            tempDelayedThreshold = GenerateRandomNumber(1, 100);
-                        }
-                        else if (chance > 33 && chance <= 66)
-                        {
-                            // if mutates addition
-                            int getDelayThreshold = firstParent.GetDelayedThreshold();
-                            int maxRange = 100 - getDelayThreshold;
-
-                            if (maxRange > 0)
-                            {
-                                int addition = Mathf.RoundToInt(Random.Range(1, maxRange));
-
-                                tempDelayedThreshold = getDelayThreshold + addition;
-                            }
-                            else
-                            {
-                                tempDelayedThreshold = 100;
-                            }
-                        }
-                        else
-                        {
-                            // if mutates subtraction
-                            int getDelayThreshold = firstParent.GetDelayedThreshold();
-                            int maxRange = getDelayThreshold;
-
-                            if (maxRange > 1)
-                            {
-                                int subtraction = Mathf.RoundToInt(Random.Range(1, maxRange));
-
-                                tempDelayedThreshold = getDelayThreshold - subtraction;
-                            }
-                            else
-                            {
-                                tempDelayedThreshold = 1;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        tempDelayedThreshold = firstParent.GetDelayedThreshold();
-                    }
+                    tempDelayedThreshold = firstParent.GetDelayedThreshold();
                 }
                 else
                 {
-                    // Check if mutates
-                    if (CheckForMutation())
-                    {
-                        // Check which mutation will occur
+                    tempDelayedThreshold = secondParent.GetDelayedThreshold();
+                }
 
-                        chance = GenerateRandomNumber(1, 100);
-
-                        if (chance <= 33)
-                        {
-                            // If mutates randomisation
-                            tempDelayedThreshold = GenerateRandomNumber(1, 100);
-                        }
-                        else if (chance > 33 && chance <= 66)
-                        {
-                            // if mutates addition
-                            int getDelayThreshold = secondParent.GetDelayedThreshold();
-                            int maxRange = 100 - getDelayThreshold;
-
-                            if (maxRange > 0)
-                            {
-                                int addition = Mathf.RoundToInt(Random.Range(1, maxRange));
-
-                                tempDelayedThreshold = getDelayThreshold + addition;
-                            }
-                            else
-                            {
-                                tempDelayedThreshold = 100;
-                            }
-                        }
-                        else
-                        {
-                            // if mutates subtraction
-                            int getDelayThreshold = secondParent.GetDelayedThreshold();
-                            int maxRange = getDelayThreshold;
-
-                            if (maxRange > 1)
-                            {
-                                int subtraction = Mathf.RoundToInt(Random.Range(1, maxRange));
-
-                                tempDelayedThreshold = getDelayThreshold - subtraction;
-                            }
-                            else
-                            {
-                                tempDelayedThreshold = 1;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        tempDelayedThreshold = secondParent.GetDelayedThreshold();
-                    }
+                if(CheckForMutation())
+                {
+                    tempDelayedThreshold = Mutate(tempDelayedThreshold, 100);
                 }
                 
             }
             // Pick which parent to take gene from
             if (i == 1)
             {
-                // Check if mutates
-                if (CheckForMutation())
+                // Generate chance
+                chance = GenerateRandomNumber(1, 100);
+
+                // Pick which parent to take gene from
+                if (chance > 50)
                 {
-                    // If mutates
-                    tempLongThreshold = GenerateRandomNumber(1, 100);
+                    tempLongThreshold  = firstParent.GetLongJumpThreshold();
                 }
-                // If not crossover like normal
                 else
                 {
-                    // Generate chance
-                    chance = GenerateRandomNumber(1, 100);
+                    tempLongThreshold = secondParent.GetLongJumpThreshold();
+                }
 
-                    // Pick which parent to take gene from
-                    if (chance > 50)
-                    {
-                        tempLongThreshold = firstParent.GetLongJumpThreshold();
-                    }
-                    else
-                    {
-                        tempLongThreshold = secondParent.GetLongJumpThreshold();
-                    }
+                if (CheckForMutation())
+                {
+                    tempLongThreshold = Mutate(tempLongThreshold, 100);
                 }
             }
             // Pick which parent to take gene from
             if (i == 2)
             {
-                // Check if mutates
-                if (CheckForMutation())
+                // Generate chance
+                chance = GenerateRandomNumber(1, 100);
+
+                // Pick which parent to take gene from
+                if (chance > 50)
                 {
-                    // If mutates
-                    tempDelayedTime = GenerateRandomNumber(0, 3);
+                    tempDelayedTime = firstParent.GetDelayedtime();
                 }
-                // If not crossover like normal
                 else
                 {
-                    // Generate chance
-                    chance = GenerateRandomNumber(1, 100);
+                    tempDelayedTime = secondParent.GetDelayedtime();
+                }
 
-                    // Pick which parent to take gene from
-                    if (chance > 50)
-                    {
-                        tempDelayedTime = firstParent.GetDelayedtime();
-                    }
-                    else
-                    {
-                        tempDelayedTime = secondParent.GetDelayedtime();
-                    }
+                if (CheckForMutation())
+                {
+                    tempDelayedTime = Mutate(tempLongThreshold, 3);
                 }
             }
             // Pick which parent to take gene from
             if (i == 3)
             {
-                // Check if mutates
-                if (CheckForMutation())
+                // Generate chance
+                chance = GenerateRandomNumber(1, 100);
+
+                // Pick which parent to take gene from
+                if (chance > 50)
                 {
-                    // If mutates
-                    tempForwardRayLength = GenerateRandomNumber(3, 10);
+                    tempForwardRayLength = firstParent.GetForwardRaycastLength();
                 }
-                // If not crossover like normal
                 else
                 {
-                    // Generate chance
-                    chance = GenerateRandomNumber(1, 100);
+                    tempForwardRayLength = secondParent.GetForwardRaycastLength();
+                }
 
-                    // Pick which parent to take gene from
-                    if (chance > 50)
-                    {
-                        tempForwardRayLength = firstParent.GetForwardRaycastLength();
-                    }
-                    else
-                    {
-                        tempForwardRayLength = secondParent.GetForwardRaycastLength();
-                    }
+                if (CheckForMutation())
+                {
+                    tempForwardRayLength = Mutate(tempForwardRayLength, 10);
                 }
             }
             // Pick which parent to take gene from
             if (i == 4)
             {
-                // Check if mutates
-                if (CheckForMutation())
+                // Generate chance
+                chance = GenerateRandomNumber(1, 100);
+
+                // Pick which parent to take gene from
+                if (chance > 50)
                 {
-                    // If mutates
-                    tempUpRightRayLength = GenerateRandomNumber(3, 10);
+                    tempUpRightRayLength = firstParent.GetForwardUpRaycastLength();
                 }
-                // If not crossover like normal
                 else
                 {
-                    // Generate chance
-                    chance = GenerateRandomNumber(1, 100);
+                    tempUpRightRayLength = secondParent.GetForwardUpRaycastLength();
+                }
 
-                    // Pick which parent to take gene from
-                    if (chance > 50)
-                    {
-                        tempUpRightRayLength = firstParent.GetForwardUpRaycastLength();
-                    }
-                    else
-                    {
-                        tempUpRightRayLength = secondParent.GetForwardUpRaycastLength();
-                    }
+                if (CheckForMutation())
+                {
+                    tempUpRightRayLength = Mutate(tempUpRightRayLength, 10);
                 }
             }
             // Pick which parent to take gene from
             if (i == 5)
             {
-                // Check if mutates
-                if (CheckForMutation())
+                // Generate chance
+                chance = GenerateRandomNumber(1, 100);
+
+                // Pick which parent to take gene from
+                if (chance > 50)
                 {
-                    // If mutates
-                    tempDownRightRayLength = GenerateRandomNumber(3, 10);
+                    tempDownRightRayLength = firstParent.GetForwardDownRaycastLength();
                 }
-                // If not crossover like normal
                 else
                 {
-                    // Generate chance
-                    chance = GenerateRandomNumber(1, 100);
+                    tempDownRightRayLength = secondParent.GetForwardDownRaycastLength();
+                }
 
-                    // Pick which parent to take gene from
-                    if (chance > 50)
-                    {
-                        tempDownRightRayLength = firstParent.GetForwardDownRaycastLength();
-                    }
-                    else
-                    {
-                        tempDownRightRayLength = secondParent.GetForwardDownRaycastLength();
-                    }
+                if (CheckForMutation())
+                {
+                    tempDownRightRayLength = Mutate(tempDownRightRayLength, 10);
                 }
             }
         }
@@ -405,6 +284,51 @@ public class FSMManager : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public int Mutate(int value, int defaultMax)
+    {
+        int chance = GenerateRandomNumber(1, 100);
+
+        if (chance <= 33)
+        {
+            // If mutates randomisation
+            value = GenerateRandomNumber(1, defaultMax);
+        }
+        else if (chance > 33 && chance <= 66)
+        {
+            // if mutates addition
+            int maxRange = defaultMax - value;
+
+            if (maxRange > 0)
+            {
+                int addition = Mathf.RoundToInt(Random.Range(1, maxRange));
+
+                value += addition;
+            }
+            else
+            {
+                value = defaultMax;
+            }
+        }
+        else
+        {
+            // if mutates subtraction
+            int maxRange = value;
+
+            if (maxRange > 1)
+            {
+                int subtraction = Mathf.RoundToInt(Random.Range(1, maxRange));
+
+                value -= subtraction;
+            }
+            else
+            {
+                value = 1;
+            }
+        }
+
+        return value;
     }
 
     private void AssignData()
