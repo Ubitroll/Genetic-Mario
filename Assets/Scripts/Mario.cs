@@ -34,8 +34,9 @@ public class Mario : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        
     }
 
     public void GoombaSquished() //When landing on goomba, jump.
@@ -52,7 +53,7 @@ public class Mario : MonoBehaviour
     {
         animator.SetBool("MarioDead", true);//Animatior bool
         rb.velocity = Vector2.zero;//Stop moving
-        rb.bodyType = RigidbodyType2D.Kinematic;//No physics applied
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
         gameObject.layer = 10;//Change layer so no collisions occur
         marioDead = true;//Bool
     }

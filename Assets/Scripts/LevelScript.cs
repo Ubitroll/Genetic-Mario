@@ -27,7 +27,7 @@ public class LevelScript : MonoBehaviour
     // Function to spawn a mario
     public void SpawnMario()
     {
-        mario = Instantiate(mario, startPoint.transform.position, Quaternion.identity); //Spawn mario at set pos
+        mario = Instantiate(marioPrefab, startPoint.transform.position, Quaternion.identity); //Spawn mario at set pos
         mario.transform.parent = parentGrid; //Set mario to be a child of the map
         mario.GetComponent<MarioFSM>().finishLine = finishLine;
     }
@@ -35,14 +35,7 @@ public class LevelScript : MonoBehaviour
     // Function to load marios stats
     public void LoadMarioGenome(GenomeDataClass marioGenes)
     {
-        mario.GetComponent<MarioFSM>().isGenerationZero = false;
-
-        mario.GetComponent<MarioFSM>().delayedJumpThreshold = marioGenes.GetDelayedThreshold();
-        mario.GetComponent<MarioFSM>().longJumpThreshold = marioGenes.GetLongJumpThreshold();
-        mario.GetComponent<MarioFSM>().jumpDelayTime = marioGenes.GetDelayedtime();
-        mario.GetComponent<MarioFSM>().forwardRaycastLength = marioGenes.GetForwardRaycastLength();
-        mario.GetComponent<MarioFSM>().upRightRaycastLength = marioGenes.GetForwardUpRaycastLength();
-        mario.GetComponent<MarioFSM>().downRightRaycastLength = marioGenes.GetForwardDownRaycastLength();
+        
 
     }
 }
