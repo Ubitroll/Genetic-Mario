@@ -203,18 +203,18 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 256
-  jumpFuzzyEnd: 0
   floorDistance: 2
   hasRan: 0
   fitnessScore: 0
-  maxTime: 60
+  maxTime: 15
   currentTime: 0
   maxDistance: 0
   distanceToFinish: 0
   finishLine: {fileID: 0}
-  delayedJumpThreshold: 69
-  longJumpThreshold: 1
   jumpDelayTime: 2
   forwardRaycastLength: 1
+  preferedForwardRayDistance: 0
   upRightRaycastLength: 1
+  preferedUpRightRayDistance: 0
   downRightRaycastLength: 1
+  preferedDownRightRayDistance: 0
