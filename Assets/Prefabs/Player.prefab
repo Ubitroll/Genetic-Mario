@@ -206,7 +206,7 @@ MonoBehaviour:
   jumpFuzzyEnd: 0
   floorDistance: 2
   fitnessScore: 0
-  maxTime: 300
+  maxTime: 5
   currentTime: 0
   maxDistance: 0
   distanceToFinish: 0

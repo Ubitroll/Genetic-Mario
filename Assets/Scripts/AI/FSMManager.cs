@@ -10,7 +10,7 @@ public class FSMManager : MonoBehaviour
     // Variables
     
     // Lists
-    List<GameObject> mapList = new List<GameObject>();
+    public List<GameObject> mapList = new List<GameObject>();
 
     
     public List<GenomeDataClass> currentGenerationGenomeArray = new List<GenomeDataClass>();
@@ -89,7 +89,7 @@ public class FSMManager : MonoBehaviour
             InstantiateMaps();
 
             // Assign data
-            AssignData();
+           // AssignData();
 
             // Move to new Gen
             generation++;
@@ -402,7 +402,7 @@ public class FSMManager : MonoBehaviour
             {
                 item = mapList[i];
             }
-            mapList.Remove(item);
+           
 
             Destroy(mapList[i].gameObject);
         }
@@ -431,6 +431,11 @@ public class FSMManager : MonoBehaviour
 
                 mapList.Add(newMap);
             }
+        }
+
+        for(int i = 0; i < mapList.Count; i++)
+        {
+            
         }
     }
 

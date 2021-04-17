@@ -24,6 +24,8 @@ public class MarioFSM : MonoBehaviour
     public int jumpFuzzyEnd;
     public int floorDistance = 2;
 
+    public bool hasRan = false;
+
     // Gentic Algorithm
     [Header("Genetic Algorithm Variable")]
     public float fitnessScore;
@@ -42,7 +44,6 @@ public class MarioFSM : MonoBehaviour
     public int upRightRaycastLength;
     public int downRightRaycastLength;
 
-    GenomeDataClass thisMarioData;
 
     // AI states
     protected enum state
@@ -62,7 +63,9 @@ public class MarioFSM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (isGenerationZero == true)
+        hasRan = false;
+
+        if (GameObject.Find("GenomeManager").GetComponent<FSMManager>().generation == 0)
         {
             SetStartRandomValues();
         }
@@ -291,10 +294,11 @@ public class MarioFSM : MonoBehaviour
         {
             UpdateFitnessScore();
 
-            if (thisMarioData = null)
+            if (!hasRan)
             {
-                thisMarioData = new GenomeDataClass(delayedJumpThreshold, longJumpThreshold, jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, fitnessScore);
+                GenomeDataClass thisMarioData = new GenomeDataClass(delayedJumpThreshold, longJumpThreshold, jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, fitnessScore);
                 GameObject.Find("GenomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData);
+                hasRan = true;
             }
         }
         // If level is finished
@@ -302,10 +306,11 @@ public class MarioFSM : MonoBehaviour
         {
             UpdateFitnessScore();
 
-            if (thisMarioData = null)
+            if (!hasRan)
             {
-                thisMarioData = new GenomeDataClass(delayedJumpThreshold, longJumpThreshold, jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, fitnessScore);
+                GenomeDataClass thisMarioData = new GenomeDataClass(delayedJumpThreshold, longJumpThreshold, jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, fitnessScore);
                 GameObject.Find("GenomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData);
+                hasRan = true;
             }
         }
     }
