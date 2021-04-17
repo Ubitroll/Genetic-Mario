@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
+using UnityEngine.UI;
 
 
 public class CameraFollow : MonoBehaviour
@@ -24,6 +25,9 @@ public class CameraFollow : MonoBehaviour
     public float transition;
     public float animTime;
 
+
+    public Scrollbar bar;
+
     // Update is called once per frame
     void Update()
     {
@@ -39,7 +43,8 @@ public class CameraFollow : MonoBehaviour
         if (!focus)//When not focused
         { 
             gameObject.GetComponent<PixelPerfectCamera>().assetsPPU = 0; //Change zoom level
-            transform.position = unfocusTarget.position + offset; //Set position
+            transform.position = (unfocusTarget.position + offset); //Set position
+            transform.position += new Vector3(bar.value * 1400, transform.position.y);
         }
 
         
