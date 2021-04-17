@@ -64,6 +64,9 @@ public class FSMManager : MonoBehaviour
             // Sort the genome list to have best first 
             SortGenome();
 
+            // Clear and prep nextgenerationArray
+            nextGenerationGenomeArray.Clear();
+
             for (int i=0; i < currentGenerationGenomeArray.Count; i++)
             {
                 // If best seed save to best seed array
@@ -76,8 +79,20 @@ public class FSMManager : MonoBehaviour
                 nextGenerationGenomeArray.Add(currentGenerationGenomeArray[i]);
             }
 
+            // Run Selection
+            Selection();
 
+            // Clear maps
+            ClearMaps();
 
+            // Instate maps
+            InstantiateMaps();
+
+            // Assign data
+            AssignData();
+
+            // Move to new Gen
+            generation++;
 
             // Clear current gen once not needed for next generation
             currentGenerationGenomeArray.Clear();
@@ -110,9 +125,10 @@ public class FSMManager : MonoBehaviour
         }
 
         // Iterate through the shortened list and choose who breed
-        // Worst 2 of remaining 26 wont breed.
+        // Worst 1 of remaining 26 wont breed.
         for (int i = 0; i < 23; i++)
         {
+            // Breed current with next parent
             Crossover(i, i + 1);
         }
     }
@@ -152,6 +168,7 @@ public class FSMManager : MonoBehaviour
                     tempDelayedThreshold = secondParent.GetDelayedThreshold();
                 }
 
+                // Check for mutation and mutate accordingly
                 if(CheckForMutation())
                 {
                     tempDelayedThreshold = Mutate(tempDelayedThreshold, 100);
@@ -174,6 +191,7 @@ public class FSMManager : MonoBehaviour
                     tempLongThreshold = secondParent.GetLongJumpThreshold();
                 }
 
+                // Check for mutation and mutate accordingly
                 if (CheckForMutation())
                 {
                     tempLongThreshold = Mutate(tempLongThreshold, 100);
@@ -195,6 +213,7 @@ public class FSMManager : MonoBehaviour
                     tempDelayedTime = secondParent.GetDelayedtime();
                 }
 
+                // Check for mutation and mutate accordingly
                 if (CheckForMutation())
                 {
                     tempDelayedTime = Mutate(tempLongThreshold, 3);
@@ -216,6 +235,7 @@ public class FSMManager : MonoBehaviour
                     tempForwardRayLength = secondParent.GetForwardRaycastLength();
                 }
 
+                // Check for mutation and mutate accordingly
                 if (CheckForMutation())
                 {
                     tempForwardRayLength = Mutate(tempForwardRayLength, 10);
@@ -237,6 +257,7 @@ public class FSMManager : MonoBehaviour
                     tempUpRightRayLength = secondParent.GetForwardUpRaycastLength();
                 }
 
+                // Check for mutation and mutate accordingly
                 if (CheckForMutation())
                 {
                     tempUpRightRayLength = Mutate(tempUpRightRayLength, 10);
@@ -258,6 +279,7 @@ public class FSMManager : MonoBehaviour
                     tempDownRightRayLength = secondParent.GetForwardDownRaycastLength();
                 }
 
+                // Check for mutation and mutate accordingly
                 if (CheckForMutation())
                 {
                     tempDownRightRayLength = Mutate(tempDownRightRayLength, 10);
@@ -265,69 +287,88 @@ public class FSMManager : MonoBehaviour
             }
         }
 
+        // Set up new child
         GenomeDataClass newChild = new GenomeDataClass(tempDelayedThreshold, tempLongThreshold, tempDelayedTime ,tempForwardRayLength, tempUpRightRayLength, tempDownRightRayLength);
 
-        
+        // Add the new child to the next generation
         nextGenerationGenomeArray.Add(newChild);
     }
 
     public bool CheckForMutation()
     {
+        // Generate a percentage chance
         int chance = Mathf.RoundToInt(Random.Range(1, 100));
 
         // See if mutation occurs
         if (chance <= mutationChance)
         {
+            // Mutation occurs
             return true;
         }
         else
         {
+            // Mutation doesn't occur
             return false;
         }
     }
 
     public int Mutate(int value, int defaultMax)
     {
+        // Generate percentage chance
         int chance = GenerateRandomNumber(1, 100);
 
+        // If mutates randomly
         if (chance <= 33)
         {
-            // If mutates randomisation
+            // Set value to random value within range
             value = GenerateRandomNumber(1, defaultMax);
         }
+        // If mutates addition
         else if (chance > 33 && chance <= 66)
         {
-            // if mutates addition
+            // Find max possible addition
             int maxRange = defaultMax - value;
 
+            // If something can be added
             if (maxRange > 0)
             {
+                // Generate addition
                 int addition = Mathf.RoundToInt(Random.Range(1, maxRange));
 
+                // Add to value
                 value += addition;
             }
+            // If the value is already at maximum
             else
             {
+                // Set to max
                 value = defaultMax;
             }
         }
+        // If mutates subtraction
         else
         {
-            // if mutates subtraction
+            // Find max possible subtraction
             int maxRange = value;
 
+            // If something can be subtracted
             if (maxRange > 1)
             {
+                // Generate subtraction
                 int subtraction = Mathf.RoundToInt(Random.Range(1, maxRange));
 
+                // Subtract from value
                 value -= subtraction;
             }
+            // If the value is already at minimum
             else
             {
+                // Set value to 1
                 value = 1;
             }
         }
 
+        // Return Value
         return value;
     }
 
@@ -338,7 +379,7 @@ public class FSMManager : MonoBehaviour
         {
             return;
         }
-        // If
+        // If not first gen;
         else
         {
             // Itterate through map list
@@ -354,6 +395,26 @@ public class FSMManager : MonoBehaviour
         int randomVariable = Mathf.RoundToInt(Random.Range(startNumber, endNumber));
 
         return randomVariable;
+    }
+
+    private void ClearMaps()
+    {
+        GameObject item;
+        
+        // Iterate through maps
+        for (int i = 0; i < mapList.Count; i++)
+        {
+            if (item = null)
+            {
+                item = mapList[i];
+            }
+            mapList.Remove(item);
+
+            Destroy(item.gameObject);
+        }
+
+        // Clear Map List
+        mapList.Clear();
     }
 
     private void InstantiateMaps()
@@ -375,8 +436,6 @@ public class FSMManager : MonoBehaviour
                 newMap.transform.parent = parentGrid;
 
                 mapList.Add(newMap);
-
-                newMap.GetComponent<LevelScript>().SpawnMario();
             }
         }
     }
