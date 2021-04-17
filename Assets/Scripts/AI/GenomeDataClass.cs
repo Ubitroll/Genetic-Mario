@@ -6,12 +6,13 @@ public class GenomeDataClass : MonoBehaviour
 {
 
     // Genome Variables
-    public int genomeDelayedThreshold = 20;
-    public int genomeLongThreshold = 0;
-    public int genomeDelayedTime = 0;
-    public int genomeForwardRayLength = 0;
-    public int genomeUpRightRayLength = 0;
-    public int genomeDownRightRayLength = 0;
+    public float genomeDelayedTime = 0;
+    public float genomeForwardRayLength = 0;
+    public float genomeUpRightRayLength = 0;
+    public float genomeDownRightRayLength = 0;
+    public float genomePreferedForwardRayLength = 0;
+    public float genomePreferedUpRightRayLength = 0;
+    public float genomePreferedDownRightRayLength = 0;
     public float genomeFitnessScore = 0;
 
     // Default Constructor
@@ -20,91 +21,104 @@ public class GenomeDataClass : MonoBehaviour
         
     }
 
-    public GenomeDataClass(int delayedThreshold, int longThreshold, int delayedTime, int forwardRayLength, int upRightRayLength, int downRightRayLength, float theFitnessScore)
+    public GenomeDataClass(float delayedTime, float forwardRayLength, float upRightRayLength, float downRightRayLength, float preferedForwardRayLength, float preferedUpRightRaylength, float preferedDownRightRayLength, float theFitnessScore)
     {
-        genomeDelayedThreshold = delayedThreshold;
-        genomeLongThreshold = longThreshold;
         genomeDelayedTime = delayedTime;
         genomeForwardRayLength = forwardRayLength;
         genomeUpRightRayLength = upRightRayLength;
         genomeDownRightRayLength = downRightRayLength;
+        genomePreferedForwardRayLength = preferedForwardRayLength;
+        genomePreferedUpRightRayLength = preferedUpRightRaylength;
+        genomePreferedDownRightRayLength = preferedDownRightRayLength;
         genomeFitnessScore = theFitnessScore;
     }
 
-    public GenomeDataClass(int delayedThreshold, int longThreshold, int delayedTime, int forwardRayLength, int upRightRayLength, int downRightRayLength)
+    public GenomeDataClass(float delayedTime, float forwardRayLength, float upRightRayLength, float downRightRayLength, float preferedForwardRayLength, float preferedUpRightRaylength, float preferedDownRightRayLength)
     {
-        genomeDelayedThreshold = delayedThreshold;
-        genomeLongThreshold = longThreshold;
         genomeDelayedTime = delayedTime;
         genomeForwardRayLength = forwardRayLength;
         genomeUpRightRayLength = upRightRayLength;
         genomeDownRightRayLength = downRightRayLength;
-    }
-
-    // Delayed Threshold Getter and Setter
-    public int GetDelayedThreshold()
-    {
-        return genomeDelayedThreshold;
-    }
-
-    public void SetDelayedThreshold( int delayedThreshold)
-    {
-        genomeDelayedThreshold = delayedThreshold;
-    }
-
-    // Long Jump Threshold Getter and Setter
-    public int GetLongJumpThreshold()
-    {
-        return genomeLongThreshold;
-    }
-
-    public void SetLongJumpThreshold(int longJumpThreshold)
-    {
-        genomeLongThreshold = longJumpThreshold;
+        genomePreferedForwardRayLength = preferedForwardRayLength;
+        genomePreferedUpRightRayLength = preferedUpRightRaylength;
+        genomePreferedDownRightRayLength = preferedDownRightRayLength;
     }
 
     // Delayed Time Getter and Setter
-    public int GetDelayedtime()
+    public float GetDelayedTime()
     {
         return genomeDelayedTime;
     }
 
-    public void SetDelayedTime(int delayedTime)
+    public void SetDelayedTime(float delayedTime)
     {
         genomeDelayedTime = delayedTime;
     }
 
     // Forward Raycast Length Getter and Setter
-    public int GetForwardRaycastLength()
+    public float GetForwardRaycastLength()
     {
         return genomeForwardRayLength;
     }
 
-    public void SetForwardRaycastLength(int forwardRaycastLength)
+    public void SetForwardRaycastLength(float forwardRaycastLength)
     {
         genomeForwardRayLength = forwardRaycastLength;
     }
 
     // Forward Up Raycast Length Getter and Setter
-    public int GetForwardUpRaycastLength()
+    public float GetForwardUpRaycastLength()
     {
         return genomeUpRightRayLength;
     }
 
-    public void SetForwardUpRaycastLength(int forwardUpRaycastLength)
+    public void SetForwardUpRaycastLength(float forwardUpRaycastLength)
     {
         genomeUpRightRayLength = forwardUpRaycastLength;
     }
 
     // Forward Down Raycast Length Getter and Setter
-    public int GetForwardDownRaycastLength()
+    public float GetForwardDownRaycastLength()
     {
         return genomeDownRightRayLength;
     }
 
-    public void SetForwardDownRayacastLength(int forwardDownRaycastLength)
+    public void SetForwardDownRayacastLength(float forwardDownRaycastLength)
     {
         genomeDownRightRayLength = forwardDownRaycastLength;
+    }
+
+    // Prefered Forward Raycast Length Getter and Setter
+    public float GetPreferedForwardRaycastLength()
+    {
+        return genomePreferedForwardRayLength;
+    }
+
+    public void SetPreferedForwardRaycastLength(float forwardPreferedRaycastLength)
+    {
+        genomePreferedForwardRayLength = forwardPreferedRaycastLength;
+    }
+
+    // Forward Up Raycast Length Getter and Setter
+    public float GetPreferedForwardUpRaycastLength()
+    {
+        return genomePreferedUpRightRayLength;
+    }
+
+    public void SetPreferedForwardUpRaycastLength(float forwardPreferedUpRaycastLength)
+    {
+        genomePreferedUpRightRayLength = forwardPreferedUpRaycastLength;
+    }
+
+    // Forward Down Raycast Length Getter and Setter
+    public float GetPreferedForwardDownRaycastLength()
+    {
+        return genomePreferedDownRightRayLength;
+    }
+
+    public void SetPreferedForwardDownRayacastLength(float forwardPreferedDownRaycastLength)
+    {
+        genomePreferedDownRightRayLength = forwardPreferedDownRaycastLength;
     }
 
     // Fitness Score Getter and Setter
@@ -124,7 +138,7 @@ public class GenomeDataClass : MonoBehaviour
 
         string temp;
 
-        temp = genomeDelayedThreshold.ToString() + " " + genomeLongThreshold.ToString() + " " + genomeDelayedTime.ToString() + " " + genomeForwardRayLength.ToString() + " " + genomeUpRightRayLength.ToString() + " " + genomeDownRightRayLength.ToString();
+        temp = genomeDelayedTime.ToString() + " " + genomeForwardRayLength.ToString() + " " + genomeUpRightRayLength.ToString() + " " + genomeDownRightRayLength.ToString() + " " + genomePreferedForwardRayLength.ToString() + " " + genomePreferedUpRightRayLength.ToString() + " " + genomePreferedDownRightRayLength.ToString();
 
         return temp;
     }

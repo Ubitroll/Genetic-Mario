@@ -136,87 +136,44 @@ public class FSMManager : MonoBehaviour
         secondParent = nextGenerationGenomeArray[secondParentIndex];
 
         // Create temps for temp storage
-        int tempDelayedThreshold = 0;
-        int tempLongThreshold = 0;
-        int tempDelayedTime = 0;
-        int tempForwardRayLength = 0;
-        int tempUpRightRayLength = 0;
-        int tempDownRightRayLength = 0; 
+        float tempDelayedTime = 0;
+        float tempForwardRayLength = 0;
+        float tempUpRightRayLength = 0;
+        float tempDownRightRayLength = 0;
+        float tempPreferedForwardRayLength = 0;
+        float tempPreferedUpRightRayLength = 0;
+        float tempPreferedDownRightRayLength = 0;
 
-        int chance;
+        float chance;
 
         // for each gene
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 7; i++)
         {
             // Pick which parent to take gene from
             if (i == 0)
             {
                 // Generate chance
-                chance = GenerateRandomNumber(1 , 100);
-                
+                chance = GenerateRandomNumber(1, 100);
+
                 // Pick which parent to take gene from
                 if (chance > 50)
                 {
-                    tempDelayedThreshold = firstParent.GetDelayedThreshold();
+                    tempDelayedTime = firstParent.GetDelayedTime();
                 }
                 else
                 {
-                    tempDelayedThreshold = secondParent.GetDelayedThreshold();
+                    tempDelayedTime = secondParent.GetDelayedTime();
                 }
 
                 // Check for mutation and mutate accordingly
-                if(CheckForMutation())
+                if (CheckForMutation())
                 {
-                    tempDelayedThreshold = Mutate(tempDelayedThreshold, 100);
+                    tempDelayedTime = Mutate(tempDelayedTime, 3);
                 }
-                
+
             }
             // Pick which parent to take gene from
             if (i == 1)
-            {
-                // Generate chance
-                chance = GenerateRandomNumber(1, 100);
-
-                // Pick which parent to take gene from
-                if (chance > 50)
-                {
-                    tempLongThreshold  = firstParent.GetLongJumpThreshold();
-                }
-                else
-                {
-                    tempLongThreshold = secondParent.GetLongJumpThreshold();
-                }
-
-                // Check for mutation and mutate accordingly
-                if (CheckForMutation())
-                {
-                    tempLongThreshold = Mutate(tempLongThreshold, 100);
-                }
-            }
-            // Pick which parent to take gene from
-            if (i == 2)
-            {
-                // Generate chance
-                chance = GenerateRandomNumber(1, 100);
-
-                // Pick which parent to take gene from
-                if (chance > 50)
-                {
-                    tempDelayedTime = firstParent.GetDelayedtime();
-                }
-                else
-                {
-                    tempDelayedTime = secondParent.GetDelayedtime();
-                }
-
-                // Check for mutation and mutate accordingly
-                if (CheckForMutation())
-                {
-                    tempDelayedTime = Mutate(tempLongThreshold, 3);
-                }
-            }
-            // Pick which parent to take gene from
-            if (i == 3)
             {
                 // Generate chance
                 chance = GenerateRandomNumber(1, 100);
@@ -238,7 +195,7 @@ public class FSMManager : MonoBehaviour
                 }
             }
             // Pick which parent to take gene from
-            if (i == 4)
+            if (i == 2)
             {
                 // Generate chance
                 chance = GenerateRandomNumber(1, 100);
@@ -260,7 +217,7 @@ public class FSMManager : MonoBehaviour
                 }
             }
             // Pick which parent to take gene from
-            if (i == 5)
+            if (i == 3)
             {
                 // Generate chance
                 chance = GenerateRandomNumber(1, 100);
@@ -281,12 +238,67 @@ public class FSMManager : MonoBehaviour
                     tempDownRightRayLength = Mutate(tempDownRightRayLength, 10);
                 }
             }
+            // Pick which parent to take gene from
+            if (i == 4)
+            {
+                // Pick which parent to take gene from
+                if (tempForwardRayLength == firstParent.GetForwardRaycastLength())
+                {
+                    tempPreferedForwardRayLength = firstParent.GetPreferedForwardRaycastLength();
+                }
+                else
+                {
+                    tempPreferedForwardRayLength = secondParent.GetPreferedForwardRaycastLength();
+                }
 
-            
+                // Check for mutation and mutate accordingly
+                if (CheckForMutation())
+                {
+                    tempPreferedForwardRayLength = Mutate(tempPreferedForwardRayLength, tempForwardRayLength);
+                }
+            }
+            // Pick which parent to take gene from
+            if (i == 5)
+            {
+                // Pick which parent to take gene from
+                if (tempUpRightRayLength == firstParent.GetForwardUpRaycastLength())
+                {
+                    tempPreferedUpRightRayLength = firstParent.GetPreferedForwardUpRaycastLength();
+                }
+                else
+                {
+                    tempPreferedUpRightRayLength = secondParent.GetPreferedForwardUpRaycastLength();
+                }
+
+                // Check for mutation and mutate accordingly
+                if (CheckForMutation())
+                {
+                    tempPreferedUpRightRayLength = Mutate(tempPreferedUpRightRayLength, tempUpRightRayLength);
+                }
+            }
+            // Pick which parent to take gene from
+            if (i == 6)
+            {
+                // Pick which parent to take gene from
+                if (tempDownRightRayLength == firstParent.GetForwardDownRaycastLength())
+                {
+                    tempPreferedDownRightRayLength = firstParent.GetPreferedForwardDownRaycastLength();
+                }
+                else
+                {
+                    tempPreferedDownRightRayLength = secondParent.GetPreferedForwardDownRaycastLength();
+                }
+
+                // Check for mutation and mutate accordingly
+                if (CheckForMutation())
+                {
+                    tempPreferedDownRightRayLength = Mutate(tempPreferedDownRightRayLength, tempDownRightRayLength);
+                }
+            }
         }
 
         // Set up new child
-        GenomeDataClass newChild = new GenomeDataClass(tempDelayedThreshold, tempLongThreshold, tempDelayedTime ,tempForwardRayLength, tempUpRightRayLength, tempDownRightRayLength);
+        GenomeDataClass newChild = new GenomeDataClass(tempDelayedTime ,tempForwardRayLength, tempUpRightRayLength, tempDownRightRayLength, tempPreferedForwardRayLength, tempPreferedUpRightRayLength, tempPreferedDownRightRayLength);
 
         
         // Add the new child to the next generation
@@ -311,28 +323,28 @@ public class FSMManager : MonoBehaviour
         }
     }
 
-    public int Mutate(int value, int defaultMax)
+    public float Mutate(float value, float defaultMax)
     {
         // Generate percentage chance
-        int chance = GenerateRandomNumber(1, 100);
+        float chance = GenerateRandomNumber(1, 100);
 
         // If mutates randomly
         if (chance <= 33)
         {
             // Set value to random value within range
-            value = GenerateRandomNumber(1, defaultMax);
+            value = GenerateRandomNumber(0, defaultMax);
         }
         // If mutates addition
         else if (chance > 33 && chance <= 66)
         {
             // Find max possible addition
-            int maxRange = defaultMax - value;
+            float maxRange = defaultMax - value;
 
             // If something can be added
             if (maxRange > 0)
             {
                 // Generate addition
-                int addition = Mathf.RoundToInt(Random.Range(1, maxRange));
+                float addition = Random.Range(0, maxRange);
 
                 // Add to value
                 value += addition;
@@ -348,13 +360,13 @@ public class FSMManager : MonoBehaviour
         else
         {
             // Find max possible subtraction
-            int maxRange = value;
+            float maxRange = value;
 
             // If something can be subtracted
-            if (maxRange > 1)
+            if (maxRange > 0.01f)
             {
                 // Generate subtraction
-                int subtraction = Mathf.RoundToInt(Random.Range(1, maxRange));
+                float subtraction = Random.Range(0, maxRange);
 
                 // Subtract from value
                 value -= subtraction;
@@ -363,7 +375,7 @@ public class FSMManager : MonoBehaviour
             else
             {
                 // Set value to 1
-                value = 1;
+                value = 0.01f;
             }
         }
 
@@ -389,9 +401,9 @@ public class FSMManager : MonoBehaviour
         }
     }
 
-    public int GenerateRandomNumber(int startNumber, int endNumber)
+    public float GenerateRandomNumber(float startNumber, float endNumber)
     {
-        int randomVariable = Mathf.RoundToInt(Random.Range(startNumber, endNumber));
+        float randomVariable = Mathf.RoundToInt(Random.Range(startNumber, endNumber));
 
         return randomVariable;
     }
@@ -484,29 +496,11 @@ public class FSMManager : MonoBehaviour
             // Add the attribute of which generation is being written
             xmlGenomeWriter.WriteAttributeString("Generation",  i.ToString());
 
-            // Create delayed threshold element
-            xmlGenomeWriter.WriteStartElement("DelayedThreshold");
-
-            // Write in genome values
-            xmlGenomeWriter.WriteString(bestSeedMarioGenomeArray[i].GetDelayedThreshold().ToString());
-
-            // End the delayed threshold element
-            xmlGenomeWriter.WriteEndElement();
-
-            // Create long jump threshold element
-            xmlGenomeWriter.WriteStartElement("LongJumpThreshold");
-
-            // Write in genome values
-            xmlGenomeWriter.WriteString(bestSeedMarioGenomeArray[i].GetLongJumpThreshold().ToString());
-
-            // End the long jump threshold element
-            xmlGenomeWriter.WriteEndElement();
-
             // Create delayed time element
             xmlGenomeWriter.WriteStartElement("DelayedTime");
 
             // Write in genome values
-            xmlGenomeWriter.WriteString(bestSeedMarioGenomeArray[i].GetDelayedtime().ToString());
+            xmlGenomeWriter.WriteString(bestSeedMarioGenomeArray[i].GetDelayedTime().ToString());
 
             // End the delayed time element
             xmlGenomeWriter.WriteEndElement();
@@ -534,6 +528,33 @@ public class FSMManager : MonoBehaviour
 
             // Write in genome values
             xmlGenomeWriter.WriteString(bestSeedMarioGenomeArray[i].GetForwardDownRaycastLength().ToString());
+
+            // End the forward down raycast length element
+            xmlGenomeWriter.WriteEndElement();
+
+            // Create forward raycast length element
+            xmlGenomeWriter.WriteStartElement("PreferedForwardRaycastLength");
+
+            // Write in genome values
+            xmlGenomeWriter.WriteString(bestSeedMarioGenomeArray[i].GetPreferedForwardRaycastLength().ToString());
+
+            // End the forward raycast length element
+            xmlGenomeWriter.WriteEndElement();
+
+            // Create forward up raycast length element
+            xmlGenomeWriter.WriteStartElement("PreferedForwardUpRaycastLength");
+
+            // Write in genome values
+            xmlGenomeWriter.WriteString(bestSeedMarioGenomeArray[i].GetPreferedForwardUpRaycastLength().ToString());
+
+            // End the forward up raycast length element
+            xmlGenomeWriter.WriteEndElement();
+
+            // Create forward down raycast length element
+            xmlGenomeWriter.WriteStartElement("PreferedForwardDownRaycastLength");
+
+            // Write in genome values
+            xmlGenomeWriter.WriteString(bestSeedMarioGenomeArray[i].GetPreferedForwardDownRaycastLength().ToString());
 
             // End the forward down raycast length element
             xmlGenomeWriter.WriteEndElement();

@@ -35,12 +35,13 @@ public class LevelScript : MonoBehaviour
     // Function to load marios stats
     public void LoadMarioGenome(GenomeDataClass marioGenes)
     {
-        marioClone.GetComponent<MarioFSM>().delayedJumpThreshold = marioGenes.GetDelayedThreshold();
-        marioClone.GetComponent<MarioFSM>().longJumpThreshold = marioGenes.GetLongJumpThreshold();
-        marioClone.GetComponent<MarioFSM>().jumpDelayTime = marioGenes.GetDelayedtime();
+        marioClone.GetComponent<MarioFSM>().jumpDelayTime = marioGenes.GetDelayedTime();
         marioClone.GetComponent<MarioFSM>().forwardRaycastLength = marioGenes.GetForwardRaycastLength();
         marioClone.GetComponent<MarioFSM>().upRightRaycastLength = marioGenes.GetForwardUpRaycastLength();
         marioClone.GetComponent<MarioFSM>().downRightRaycastLength = marioGenes.GetForwardDownRaycastLength();
+        marioClone.GetComponent<MarioFSM>().preferedForwardRayDistance = marioGenes.GetPreferedForwardRaycastLength();
+        marioClone.GetComponent<MarioFSM>().preferedUpRightRayDistance = marioGenes.GetPreferedForwardUpRaycastLength();
+        marioClone.GetComponent<MarioFSM>().preferedDownRightRayDistance = marioGenes.GetPreferedForwardDownRaycastLength();
 
     }
 }
