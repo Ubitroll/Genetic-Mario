@@ -69,6 +69,7 @@ public class FSMManager : MonoBehaviour
 
             for (int i=0; i < currentGenerationGenomeArray.Count; i++)
             {
+                
                 // If best seed save to best seed array
                 if (i == 0)
                 {
@@ -77,6 +78,7 @@ public class FSMManager : MonoBehaviour
 
                 // Save to next generation array for Genetic Alogirthm functions
                 nextGenerationGenomeArray.Add(currentGenerationGenomeArray[i]);
+               
             }
 
             // Run Selection
@@ -89,7 +91,7 @@ public class FSMManager : MonoBehaviour
             InstantiateMaps();
 
             // Assign data
-           // AssignData();
+           //AssignData();
 
             // Move to new Gen
             generation++;
@@ -279,11 +281,14 @@ public class FSMManager : MonoBehaviour
                     tempDownRightRayLength = Mutate(tempDownRightRayLength, 10);
                 }
             }
+
+            
         }
 
         // Set up new child
         GenomeDataClass newChild = new GenomeDataClass(tempDelayedThreshold, tempLongThreshold, tempDelayedTime ,tempForwardRayLength, tempUpRightRayLength, tempDownRightRayLength);
 
+        Debug.Log("new kiddo: "+newChild.genomeToString());
         // Add the new child to the next generation
         nextGenerationGenomeArray.Add(newChild);
     }
@@ -432,11 +437,21 @@ public class FSMManager : MonoBehaviour
                 mapList.Add(newMap);
             }
         }
-
         for(int i = 0; i < mapList.Count; i++)
         {
-            
+            mapList[i].GetComponent<LevelScript>().SpawnMario();
         }
+
+       
+            for (int i = 0; i < mapList.Count; i++)
+            {
+                Debug.Log(nextGenerationGenomeArray[i].GetForwardRaycastLength());
+                mapList[i].GetComponent<LevelScript>().LoadMarioGenome(nextGenerationGenomeArray[i]);
+            }
+        
+    
+
+        
     }
 
     public void SaveGenomeToXMLFile(string fileName)

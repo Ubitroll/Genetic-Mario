@@ -6,13 +6,13 @@ public class GenomeDataClass : MonoBehaviour
 {
 
     // Genome Variables
-    public int genomeDelayedThreshold;
-    public int genomeLongThreshold;
-    public int genomeDelayedTime;
-    public int genomeForwardRayLength;
-    public int genomeUpRightRayLength;
-    public int genomeDownRightRayLength;
-    public float genomeFitnessScore;
+    public int genomeDelayedThreshold = 20;
+    public int genomeLongThreshold = 0;
+    public int genomeDelayedTime = 0;
+    public int genomeForwardRayLength = 0;
+    public int genomeUpRightRayLength = 0;
+    public int genomeDownRightRayLength = 0;
+    public float genomeFitnessScore = 0;
 
     // Default Constructor
     public GenomeDataClass()

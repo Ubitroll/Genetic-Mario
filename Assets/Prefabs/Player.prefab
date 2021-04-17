@@ -205,15 +205,16 @@ MonoBehaviour:
     m_Bits: 256
   jumpFuzzyEnd: 0
   floorDistance: 2
+  hasRan: 0
   fitnessScore: 0
   maxTime: 5
   currentTime: 0
   maxDistance: 0
   distanceToFinish: 0
   finishLine: {fileID: 0}
-  delayedJumpThreshold: 0
-  longJumpThreshold: 0
-  jumpDelayTime: 0
-  forwardRaycastLength: 0
-  upRightRaycastLength: 0
-  downRightRaycastLength: 0
+  delayedJumpThreshold: 69
+  longJumpThreshold: 1
+  jumpDelayTime: 2
+  forwardRaycastLength: 1
+  upRightRaycastLength: 1
+  downRightRaycastLength: 1

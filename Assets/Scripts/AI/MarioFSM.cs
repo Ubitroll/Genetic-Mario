@@ -19,8 +19,7 @@ public class MarioFSM : MonoBehaviour
     // Fuzzy logic Variables
     // Make new Random
     private float randomGeneratedNumber;
-    
-    
+
     public int jumpFuzzyEnd;
     public int floorDistance = 2;
 
@@ -36,7 +35,7 @@ public class MarioFSM : MonoBehaviour
     public GameObject finishLine;
 
     // Genome Variables
-    [Header("Genome Variables")]
+    //[Header("Genome Variables")]
     public int delayedJumpThreshold;
     public int longJumpThreshold;
     public int jumpDelayTime;
@@ -69,6 +68,7 @@ public class MarioFSM : MonoBehaviour
         {
             SetStartRandomValues();
         }
+        
 
         jumpFuzzyEnd = 100;
 

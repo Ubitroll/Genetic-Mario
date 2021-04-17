@@ -16,7 +16,7 @@ public class OnMouseOver : MonoBehaviour
     }
     private void Update()
     {
-        playerTransform = this.gameObject.GetComponent<LevelScript>().mario.transform; //Set the player transform to mario object
+        playerTransform = this.gameObject.GetComponent<LevelScript>().marioClone.transform; //Set the player transform to mario object
     }
 
     void OnMouseEnter()//When hover over
