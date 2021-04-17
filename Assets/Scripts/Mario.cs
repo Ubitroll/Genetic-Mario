@@ -34,7 +34,8 @@ public class Mario : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-  
+
+        
     }
 
     public void GoombaSquished() //When landing on goomba, jump.
@@ -42,13 +43,18 @@ public class Mario : MonoBehaviour
         rb.velocity = Vector2.up * jumpVel;
     }
 
-    public void MarioDeath() //Upon marios death, play animation
+    public void MarioReset()
     {
-        animator.SetBool("MarioDead", true);
-        rb.velocity = Vector2.zero;
-        rb.bodyType = RigidbodyType2D.Kinematic;
-        gameObject.layer = 10;
-        marioDead = true;
+
+    }
+
+    public void MarioDeath() //Used when a goomba collides with mario
+    {
+        animator.SetBool("MarioDead", true);//Animatior bool
+        rb.velocity = Vector2.zero;//Stop moving
+        rb.bodyType = RigidbodyType2D.Kinematic;//No physics applied
+        gameObject.layer = 10;//Change layer so no collisions occur
+        marioDead = true;//Bool
     }
 
     private void Awake()
@@ -192,7 +198,7 @@ public class Mario : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)//Used to check if mario has got to the finish
     {
         if(collision.gameObject.layer ==  LayerMask.NameToLayer("finish"))
         {

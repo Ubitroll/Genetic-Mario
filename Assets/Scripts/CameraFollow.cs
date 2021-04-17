@@ -18,7 +18,7 @@ public class CameraFollow : MonoBehaviour
     public Vector3 offset;
     public bool focus = false;
 
-    public int focusPPU = 16;
+    public int focusPPU = 16; //Zoom level
     public int unfocusPPU = 4;
 
     public float transition;
@@ -28,18 +28,18 @@ public class CameraFollow : MonoBehaviour
     void Update()
     {
         
-        if(focus)
+        if(focus) //When focused on one mario
         {
-            gameObject.GetComponent<PixelPerfectCamera>().assetsPPU = 14;
+            gameObject.GetComponent<PixelPerfectCamera>().assetsPPU = 14; //Change zoom level
             //float targetX = Mathf.Max(minX, Mathf.Min(maxX, focusTarget.transform.position.x));
-            cameraClampOffset = Camera.main.orthographicSize * Screen.width / Screen.height;
-            transform.position = new Vector3(Mathf.Clamp(focusTarget.position.x, minX + cameraClampOffset, maxX - cameraClampOffset), mapY, focusTarget.position.z + offset.z);
+            cameraClampOffset = Camera.main.orthographicSize * Screen.width / Screen.height; //Set the clamp to the new camera width
+            transform.position = new Vector3(Mathf.Clamp(focusTarget.position.x, minX + cameraClampOffset, maxX - cameraClampOffset), mapY, focusTarget.position.z + offset.z); //Set the position to follow mario
 
         }
-        if (!focus)
+        if (!focus)//When not focused
         { 
-            gameObject.GetComponent<PixelPerfectCamera>().assetsPPU = 0;
-            transform.position = unfocusTarget.position + offset;
+            gameObject.GetComponent<PixelPerfectCamera>().assetsPPU = 0; //Change zoom level
+            transform.position = unfocusTarget.position + offset; //Set position
         }
 
         

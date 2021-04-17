@@ -5,10 +5,10 @@ using UnityEngine.Tilemaps;
 
 public class OnMouseOver : MonoBehaviour
 {
-    public Color startColor;
-    public Color highlightColor;
-    public Tilemap tilemap;
-    public Transform playerTransform;
+    public Color startColor; //Origional color
+    public Color highlightColor; //Highlight color
+    public Tilemap tilemap; //The map
+    public Transform playerTransform; //The child player transform
 
     private void Start()
     {
@@ -16,28 +16,27 @@ public class OnMouseOver : MonoBehaviour
     }
     private void Update()
     {
-        playerTransform = this.gameObject.GetComponent<LevelScript>().mario.transform;
+        playerTransform = this.gameObject.GetComponent<LevelScript>().mario.transform; //Set the player transform to mario object
     }
 
-    void OnMouseEnter()
+    void OnMouseEnter()//When hover over
     {
-        startColor = tilemap.color;
-        tilemap.color = highlightColor;
-        print(tilemap.transform.TransformPoint(tilemap.cellBounds.center).y);
+        startColor = tilemap.color; //Get origional color 
+        tilemap.color = highlightColor; //Highlight map
         
     }
-    void OnMouseExit()
+    void OnMouseExit() //On hover exit
     {
-        tilemap.color = startColor;
+        tilemap.color = startColor;//Set map color back to normal
        
     }
-    void OnMouseUp()
+    void OnMouseUp() //When clicked
     {
-        GameObject.Find("Main Camera").GetComponent<CameraFollow>().focusTarget = playerTransform;
-        GameObject.Find("Main Camera").GetComponent<CameraFollow>().focus = true;
-        GameObject.Find("Main Camera").GetComponent<CameraFollow>().mapY = tilemap.transform.TransformPoint(tilemap.cellBounds.center).y;
-        GameObject.Find("Main Camera").GetComponent<CameraFollow>().minX = tilemap.transform.TransformPoint(tilemap.cellBounds.min).x;
-        GameObject.Find("Main Camera").GetComponent<CameraFollow>().maxX = tilemap.transform.TransformPoint(tilemap.cellBounds.max).x;
+        GameObject.Find("Main Camera").GetComponent<CameraFollow>().focusTarget = playerTransform; //Send transform to camera follow class
+        GameObject.Find("Main Camera").GetComponent<CameraFollow>().focus = true; //Set focus to true
+        GameObject.Find("Main Camera").GetComponent<CameraFollow>().mapY = tilemap.transform.TransformPoint(tilemap.cellBounds.center).y; //Get the center of the map clicked on
+        GameObject.Find("Main Camera").GetComponent<CameraFollow>().minX = tilemap.transform.TransformPoint(tilemap.cellBounds.min).x; //Get the bounds of the map clicked on
+        GameObject.Find("Main Camera").GetComponent<CameraFollow>().maxX = tilemap.transform.TransformPoint(tilemap.cellBounds.max).x; // ^^^^^^^
 
         ;
     }

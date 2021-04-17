@@ -4,29 +4,26 @@ using UnityEngine;
 
 public class Goomba : MonoBehaviour
 {
+    //Layer masks for collision checking
     [SerializeField] private LayerMask platformLayerMask;
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private LayerMask enemyMask;
 
-
-    public int id;
-
-    public Animator animator;
+    public Animator animator; //Animator
     
-    public SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;//Renderer
 
-    public float speed;
-    public bool isRight;
-    public bool heDead;
-    public bool marioKilled;
+    public float speed;//Movement speed
+    public bool isRight;//Direction bool
+    public bool heDead;//Bool for death
 
-    public bool shouldCollide;
+    public bool shouldCollide;//Should collisions be checked
 
 
-    public BoxCollider2D boxCollider;
-    public Rigidbody2D rb;
+    public BoxCollider2D boxCollider;//Collider
+    public Rigidbody2D rb;//Rigidbody
 
-    public float fallMultiplier = 2.5f;
+    public float fallMultiplier = 2.5f; //Gravity modifiers
     public float lowJumpMultiplier = 2f;
 
 
@@ -34,7 +31,6 @@ public class Goomba : MonoBehaviour
     {
         rb = this.gameObject.GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        marioKilled = false;
         shouldCollide = true;
     }
 
@@ -44,36 +40,36 @@ public class Goomba : MonoBehaviour
     }
 
 
-    void GoombaMoveLeft()
+    void GoombaMoveLeft() //Move left
     {
         //rb.velocity += Vector2.left * speed * Time.deltaTime;
         transform.position -= transform.right * (Time.deltaTime * speed);
     }
-    void GoombaMoveRight()
+    void GoombaMoveRight() //Move right
     {
         //rb.velocity += Vector2.right * speed * Time.deltaTime;
         transform.position += transform.right * (Time.deltaTime * speed);
     }
-    void GoombaStoppedBecauseHeIsDeadOhLordWhyDoTheGoodDieYoung()
+    void GoombaStoppedBecauseHeIsDeadOhLordWhyDoTheGoodDieYoung() //Stop movement on death
     {
         rb.velocity = Vector2.zero;
     }
 
-    public bool TouchingWallLeft()
+    public bool TouchingWallLeft()//Check if colliding with objects on layers
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, 0.05f);
         Color rayColor;
 
         if (raycastHit.collider != null)
         {
-            rayColor = Color.green;
+            rayColor = Color.green;//If collision with layer, return true
             if (raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("platform") || raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
             {
                 return true;
             }
 
             if (raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("player"))
-            {
+            {//If collision with mario, kill mario
                 raycastHit.transform.gameObject.GetComponent<Mario>().MarioDeath();
             }
         }
@@ -86,7 +82,7 @@ public class Goomba : MonoBehaviour
         return false;
         //Debug.Log(raycastHit.collider);
     }
-    public bool TouchingWallRight()
+    public bool TouchingWallRight()//Similar to above, but for the right direction
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.right, 0.05f);
         Color rayColor;
@@ -113,7 +109,7 @@ public class Goomba : MonoBehaviour
 
     }
 
-    public bool MarioOnHead(bool active)
+    public bool MarioOnHead(bool active)//Check if mario has landed on top
     {
         if (active)
         {
@@ -121,7 +117,7 @@ public class Goomba : MonoBehaviour
             Color rayColor;
 
             if (raycastHit.collider != null)
-            {
+            {//If mario has landed on top, kill goomba
                 rayColor = Color.green;
                 raycastHit.collider.transform.gameObject.GetComponent<Mario>().GoombaSquished();
             }
@@ -142,24 +138,24 @@ public class Goomba : MonoBehaviour
 
     public void Update()
     {
-        if (isRight && !heDead && !marioKilled)
+        if (isRight && !heDead) //If bool is true and not dead, move right
         {
             GoombaMoveRight();
             //spriteRenderer.flipX = true;
         }
-        if (!isRight && !heDead && !marioKilled)
+        if (!isRight && !heDead)//If bool is false and not dead, move left
         {
             GoombaMoveLeft();
             //spriteRenderer.flipX = false;
         }
 
-        if (heDead)
+        if (heDead)//If dead, stop moving
         {
             GoombaStoppedBecauseHeIsDeadOhLordWhyDoTheGoodDieYoung();
         }
 
 
-        if (TouchingWallLeft())
+        if (TouchingWallLeft()) //If collision with wall or enemy, change direction
         {
             isRight = true;
         }
@@ -168,14 +164,14 @@ public class Goomba : MonoBehaviour
             isRight = false;
         }
 
-        if (MarioOnHead(shouldCollide))
+        if (MarioOnHead(shouldCollide)) //If mario on head
         {
-            heDead = true;
-            gameObject.layer = LayerMask.NameToLayer("dead");
-            animator.SetBool("Dead", true);
-            shouldCollide = false;
+            heDead = true; //Kill goomba
+            gameObject.layer = LayerMask.NameToLayer("dead"); //Change layer to stop collisions
+            animator.SetBool("Dead", true); //Set animator bool
+            shouldCollide = false; //Stop checking collisions
             //MarioOnHead(shouldCollide);
-            GoombaKilled();
+            GoombaKilled(); //Destory gameobject
 
         }
 
@@ -188,11 +184,6 @@ public class Goomba : MonoBehaviour
        Destroy(this.gameObject, 0.7f);
     }
 
-    private void MarioDeaded()
-    {
-        marioKilled = true; Debug.Log("He ded");
-        
-    }
 
    
 
