@@ -288,7 +288,7 @@ public class FSMManager : MonoBehaviour
         // Set up new child
         GenomeDataClass newChild = new GenomeDataClass(tempDelayedThreshold, tempLongThreshold, tempDelayedTime ,tempForwardRayLength, tempUpRightRayLength, tempDownRightRayLength);
 
-        Debug.Log("new kiddo: "+newChild.genomeToString());
+        
         // Add the new child to the next generation
         nextGenerationGenomeArray.Add(newChild);
     }
@@ -446,7 +446,7 @@ public class FSMManager : MonoBehaviour
        {
             for (int i = 0; i < mapList.Count; i++)
             {
-                Debug.Log(nextGenerationGenomeArray[i].GetForwardRaycastLength());
+                Debug.Log(nextGenerationGenomeArray[i].genomeToString());
                 mapList[i].GetComponent<LevelScript>().LoadMarioGenome(nextGenerationGenomeArray[i]);
             }
        }
