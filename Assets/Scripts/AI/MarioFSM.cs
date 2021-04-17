@@ -20,7 +20,6 @@ public class MarioFSM : MonoBehaviour
     // Make new Random
     private float randomGeneratedNumber;
 
-    public int jumpFuzzyEnd;
     public int floorDistance = 2;
 
     public bool hasRan = false;
@@ -35,13 +34,14 @@ public class MarioFSM : MonoBehaviour
     public GameObject finishLine;
 
     // Genome Variables
-    //[Header("Genome Variables")]
-    public int delayedJumpThreshold;
-    public int longJumpThreshold;
-    public int jumpDelayTime;
-    public int forwardRaycastLength;
-    public int upRightRaycastLength;
-    public int downRightRaycastLength;
+    [Header("Genome Variables")]
+    public float jumpDelayTime;
+    public float forwardRaycastLength;
+    public float preferedForwardRayDistance;
+    public float upRightRaycastLength;
+    public float preferedUpRightRayDistance;
+    public float downRightRaycastLength;
+    public float preferedDownRightRayDistance;
 
 
     // AI states
@@ -70,7 +70,7 @@ public class MarioFSM : MonoBehaviour
         }
         
 
-        jumpFuzzyEnd = 100;
+        
 
         // Set Rigid Body
         rigidBody = GetComponent<Rigidbody2D>();
@@ -127,12 +127,6 @@ public class MarioFSM : MonoBehaviour
                 {
                     currentState = state.MeetObstacle;
                 }
-
-                // If hitUpForward raycast hits an enemy
-                if (hitUpForward.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
-                {
-                    currentState = state.MeetEnemy;
-                }
             }
 
             // If hitDownForward hits something
@@ -146,12 +140,6 @@ public class MarioFSM : MonoBehaviour
                     {
                         currentState = state.MeetObstacle;
                     }
-                }
-
-                // If hitDownForward raycast hits an enemy
-                if (hitDownForward.transform.gameObject.layer == LayerMask.NameToLayer("enemy"))
-                {
-                    currentState = state.MeetEnemy;
                 }
             }
 
@@ -175,18 +163,16 @@ public class MarioFSM : MonoBehaviour
         // If AI meets an enemy
         else if (currentState == state.MeetEnemy)
         {
-            RandomNumberGeneration(jumpFuzzyEnd);
-
             // Walk right
             this.GetComponent<Mario>().MoveRight();
 
             // decide whether to make a delayed jump or an instant jump
-            if (randomGeneratedNumber >= delayedJumpThreshold)
+            if (hitForward.distance >= preferedForwardRayDistance)
             {
                 // Delay then Jump
                 DelayJump(jumpDelayTime);
             }
-            else if (randomGeneratedNumber < delayedJumpThreshold)
+            else if (hitForward.distance < preferedForwardRayDistance)
             {
                 // Trigger instant jump
                 currentState = state.Jump;
@@ -212,18 +198,40 @@ public class MarioFSM : MonoBehaviour
         // If AI meets an obstacle
         else if (currentState == state.MeetObstacle)
         {
-            RandomNumberGeneration(jumpFuzzyEnd);
-
             // Walk right
             this.GetComponent<Mario>().MoveRight();
 
             // decide whether to make a delayed jump or an instant jump
-            if (randomGeneratedNumber >= delayedJumpThreshold)
+            if (hitForward.distance >= preferedForwardRayDistance)
             {
                 // Delay then Jump
                 DelayJump(jumpDelayTime);
             }
-            else if (randomGeneratedNumber < delayedJumpThreshold)
+            else if (hitForward.distance < preferedForwardRayDistance)
+            {
+                // Trigger instant jump
+                currentState = state.Jump;
+            }
+
+            // decide whether to make a delayed jump or an instant jump
+            if (hitUpForward.distance >= preferedUpRightRayDistance)
+            {
+                // Delay then Jump
+                DelayJump(jumpDelayTime);
+            }
+            else if (hitUpForward.distance < preferedUpRightRayDistance)
+            {
+                // Trigger instant jump
+                currentState = state.Jump;
+            }
+
+            // decide whether to make a delayed jump or an instant jump
+            if (hitDownForward.distance >= preferedDownRightRayDistance)
+            {
+                // Delay then Jump
+                DelayJump(jumpDelayTime);
+            }
+            else if (hitDownForward.distance < preferedDownRightRayDistance)
             {
                 // Trigger instant jump
                 currentState = state.Jump;
@@ -255,15 +263,40 @@ public class MarioFSM : MonoBehaviour
             // If mario is grounded
             if (this.GetComponent<Mario>().IsGrounded())
             {
-                RandomNumberGeneration(jumpFuzzyEnd);
 
-                // Then decide which jump to make
-                if (randomGeneratedNumber >= longJumpThreshold)
+                // decide whether to make a delayed jump or an instant jump
+                if (hitForward.distance >= preferedForwardRayDistance)
                 {
+                    // Activate Long Jump
                     this.GetComponent<Mario>().LongJump();
                 }
-                else if (randomGeneratedNumber < longJumpThreshold)
+                else if (hitForward.distance < preferedForwardRayDistance)
                 {
+                    // Activate Short Jump
+                    this.GetComponent<Mario>().ShortJump();
+                }
+
+                // decide whether to make a delayed jump or an instant jump
+                if (hitUpForward.distance >= preferedUpRightRayDistance)
+                {
+                    // Activate Long Jump
+                    this.GetComponent<Mario>().LongJump();
+                }
+                else if (hitUpForward.distance < preferedUpRightRayDistance)
+                {
+                    // Activate Short Jump
+                    this.GetComponent<Mario>().ShortJump();
+                }
+
+                // decide whether to make a delayed jump or an instant jump
+                if (hitDownForward.distance >= preferedDownRightRayDistance)
+                {
+                    // Activate Long Jump
+                    this.GetComponent<Mario>().LongJump();
+                }
+                else if (hitDownForward.distance < preferedDownRightRayDistance)
+                {
+                    // Activate Short Jump
                     this.GetComponent<Mario>().ShortJump();
                 }
             }
@@ -296,7 +329,7 @@ public class MarioFSM : MonoBehaviour
 
             if (!hasRan)
             {
-                GenomeDataClass thisMarioData = new GenomeDataClass(delayedJumpThreshold, longJumpThreshold, jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, fitnessScore);
+                GenomeDataClass thisMarioData = new GenomeDataClass(jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, preferedForwardRayDistance, preferedUpRightRayDistance, preferedDownRightRayDistance, fitnessScore);
                 GameObject.Find("GenomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData);
                 hasRan = true;
             }
@@ -308,7 +341,7 @@ public class MarioFSM : MonoBehaviour
 
             if (!hasRan)
             {
-                GenomeDataClass thisMarioData = new GenomeDataClass(delayedJumpThreshold, longJumpThreshold, jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, fitnessScore);
+                GenomeDataClass thisMarioData = new GenomeDataClass(jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, preferedForwardRayDistance, preferedUpRightRayDistance, preferedDownRightRayDistance, fitnessScore);
                 GameObject.Find("GenomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData);
                 hasRan = true;
             }
@@ -326,23 +359,18 @@ public class MarioFSM : MonoBehaviour
 
     private void SetStartRandomValues()
     {
-        // Set random jump thresholds
-        longJumpThreshold = Mathf.RoundToInt(Random.Range(1, 100));
-        delayedJumpThreshold = Mathf.RoundToInt(Random.Range(1, 100));
-
         // Set random time delays
         jumpDelayTime = Random.Range(0, 8);
         
         // Set random raycast length
-        forwardRaycastLength = Mathf.RoundToInt(Random.Range(3, 10));
-        upRightRaycastLength = Mathf.RoundToInt(Random.Range(3, 10));
-        downRightRaycastLength = Mathf.RoundToInt(Random.Range(3, 10));
-    }
+        forwardRaycastLength = Random.Range(3, 10);
+        upRightRaycastLength = Random.Range(3, 10);
+        downRightRaycastLength = Random.Range(3, 10);
 
-    private void RandomNumberGeneration(int endNumber)
-    {
-        // generate random number
-        randomGeneratedNumber = Random.Range(0, endNumber);
+        // Set random prefered raycast lengths
+        preferedForwardRayDistance = forwardRaycastLength / 2;
+        preferedUpRightRayDistance = upRightRaycastLength / 2;
+        preferedDownRightRayDistance = downRightRaycastLength / 2;
     }
 
     private void UpdateDistanceTravelledAndTime()
