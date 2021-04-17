@@ -294,7 +294,7 @@ public class MarioFSM : MonoBehaviour
             if (thisMarioData = null)
             {
                 thisMarioData = new GenomeDataClass(delayedJumpThreshold, longJumpThreshold, jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, fitnessScore);
-                GameObject.Find("genomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData);
+                GameObject.Find("GenomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData);
             }
         }
         // If level is finished
@@ -305,7 +305,7 @@ public class MarioFSM : MonoBehaviour
             if (thisMarioData = null)
             {
                 thisMarioData = new GenomeDataClass(delayedJumpThreshold, longJumpThreshold, jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, fitnessScore);
-                GameObject.Find("genomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData);
+                GameObject.Find("GenomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData);
             }
         }
     }

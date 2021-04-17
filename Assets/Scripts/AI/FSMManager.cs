@@ -10,7 +10,7 @@ public class FSMManager : MonoBehaviour
     // Variables
     
     // Lists
-    List<GameObject> mapList;
+    List<GameObject> mapList = new List<GameObject>();
 
     
     public List<GenomeDataClass> currentGenerationGenomeArray = new List<GenomeDataClass>();
@@ -49,7 +49,7 @@ public class FSMManager : MonoBehaviour
     void Start()
     {
         // Number of marios is grid length times grid height
-        numberOfMarios = gridSizeX * gridSizeX;
+        numberOfMarios = gridSizeX * gridSizeY;
 
         InstantiateMaps();
     }
@@ -116,17 +116,11 @@ public class FSMManager : MonoBehaviour
         int count = nextGenerationGenomeArray.Count();
 
         // Iterate through the sorted next gen and remove the worst 24
-        for (int i = 0; i < count; i++)
-        {
-            if (i > 25)
-            {
-                nextGenerationGenomeArray.RemoveAt(i);
-            }
-        }
+        nextGenerationGenomeArray.RemoveRange(26, 24);
 
         // Iterate through the shortened list and choose who breed
         // Worst 1 of remaining 26 wont breed.
-        for (int i = 0; i < 23; i++)
+        for (int i = 0; i < 24; i++)
         {
             // Breed current with next parent
             Crossover(i, i + 1);
@@ -410,7 +404,7 @@ public class FSMManager : MonoBehaviour
             }
             mapList.Remove(item);
 
-            Destroy(item.gameObject);
+            Destroy(mapList[i].gameObject);
         }
 
         // Clear Map List
