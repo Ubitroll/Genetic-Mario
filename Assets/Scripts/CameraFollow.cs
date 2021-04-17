@@ -44,7 +44,7 @@ public class CameraFollow : MonoBehaviour
         { 
             gameObject.GetComponent<PixelPerfectCamera>().assetsPPU = 0; //Change zoom level
             transform.position = (unfocusTarget.position + offset); //Set position
-            transform.position += new Vector3(bar.value * 1400, transform.position.y);
+            transform.position += new Vector3(bar.value * 1450, transform.position.y);
         }
 
         
