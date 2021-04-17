@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GenomeLibrary>
+  <Genome Generation="0">
+    <DelayedThreshold>40</DelayedThreshold>
+    <LongJumpThreshold>7</LongJumpThreshold>
+    <DelayedTime>4</DelayedTime>
+    <ForwardRaycastLength>4</ForwardRaycastLength>
+    <ForwardUpRaycastLength>9</ForwardUpRaycastLength>
+    <ForwardDownRaycastLength>4</ForwardDownRaycastLength>
+    <FitnessScore>54.56491</FitnessScore>
+  </Genome>
+  <Genome Generation="1">
+    <DelayedThreshold>41</DelayedThreshold>
+    <LongJumpThreshold>1</LongJumpThreshold>
+    <DelayedTime>5</DelayedTime>
+    <ForwardRaycastLength>7</ForwardRaycastLength>
+    <ForwardUpRaycastLength>7</ForwardUpRaycastLength>
+    <ForwardDownRaycastLength>8</ForwardDownRaycastLength>
+    <FitnessScore>57.96095</FitnessScore>
+  </Genome>
+  <Genome Generation="2">
+    <DelayedThreshold>52</DelayedThreshold>
+    <LongJumpThreshold>39</LongJumpThreshold>
+    <DelayedTime>2</DelayedTime>
+    <ForwardRaycastLength>2</ForwardRaycastLength>
+    <ForwardUpRaycastLength>7</ForwardUpRaycastLength>
+    <ForwardDownRaycastLength>6</ForwardDownRaycastLength>
+    <FitnessScore>57.0392</FitnessScore>
+  </Genome>
+  <Genome Generation="3">
+    <DelayedThreshold>80</DelayedThreshold>
+    <LongJumpThreshold>1</LongJumpThreshold>
+    <DelayedTime>5</DelayedTime>
+    <ForwardRaycastLength>6</ForwardRaycastLength>
+    <ForwardUpRaycastLength>8</ForwardUpRaycastLength>
+    <ForwardDownRaycastLength>5</ForwardDownRaycastLength>
+    <FitnessScore>58.31629</FitnessScore>
+  </Genome>
+  <Genome Generation="4">
+    <DelayedThreshold>58</DelayedThreshold>
+    <LongJumpThreshold>14</LongJumpThreshold>
+    <DelayedTime>1</DelayedTime>
+    <ForwardRaycastLength>4</ForwardRaycastLength>
+    <ForwardUpRaycastLength>9</ForwardUpRaycastLength>
+    <ForwardDownRaycastLength>6</ForwardDownRaycastLength>
+    <FitnessScore>57.22972</FitnessScore>
+  </Genome>
+</GenomeLibrary>

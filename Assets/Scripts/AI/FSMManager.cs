@@ -442,12 +442,19 @@ public class FSMManager : MonoBehaviour
             mapList[i].GetComponent<LevelScript>().SpawnMario();
         }
 
-       
+       try
+       {
             for (int i = 0; i < mapList.Count; i++)
             {
                 Debug.Log(nextGenerationGenomeArray[i].GetForwardRaycastLength());
                 mapList[i].GetComponent<LevelScript>().LoadMarioGenome(nextGenerationGenomeArray[i]);
             }
+       }
+       catch
+       {
+            Debug.Log("Check Generation");
+       }
+            
         
     
 
@@ -475,7 +482,7 @@ public class FSMManager : MonoBehaviour
             xmlGenomeWriter.WriteStartElement("Genome");
 
             // Add the attribute of which generation is being written
-            xmlGenomeWriter.WriteAttributeString("Generation ",  i.ToString());
+            xmlGenomeWriter.WriteAttributeString("Generation",  i.ToString());
 
             // Create delayed threshold element
             xmlGenomeWriter.WriteStartElement("DelayedThreshold");
