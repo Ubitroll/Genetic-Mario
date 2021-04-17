@@ -42,6 +42,8 @@ public class MarioFSM : MonoBehaviour
     public int upRightRaycastLength;
     public int downRightRaycastLength;
 
+    GenomeDataClass thisMarioData;
+
     // AI states
     protected enum state
     {
@@ -288,11 +290,23 @@ public class MarioFSM : MonoBehaviour
         else if (currentState == state.Dead)
         {
             UpdateFitnessScore();
+
+            if (thisMarioData = null)
+            {
+                thisMarioData = new GenomeDataClass(delayedJumpThreshold, longJumpThreshold, jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, fitnessScore);
+                GameObject.Find("genomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData);
+            }
         }
         // If level is finished
         else if (currentState == state.CompletedLevel)
         {
             UpdateFitnessScore();
+
+            if (thisMarioData = null)
+            {
+                thisMarioData = new GenomeDataClass(delayedJumpThreshold, longJumpThreshold, jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, fitnessScore);
+                GameObject.Find("genomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData)
+            }
         }
     }
 
@@ -331,8 +345,8 @@ public class MarioFSM : MonoBehaviour
         // Measures distance between mario and finish line
         distanceToFinish = Vector2.Distance(this.transform.position, finishLine.transform.position);
 
-        if (this.GetComponent<Mario>().marioDead == false)
-        {
+        if (currentState != state.CompletedLevel)
+        {            
             // Track mario's current time
             currentTime += Time.deltaTime;
         }
