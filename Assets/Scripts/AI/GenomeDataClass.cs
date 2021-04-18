@@ -21,7 +21,14 @@ public class GenomeDataClass : MonoBehaviour
         
     }
 
-    public GenomeDataClass(float delayedTime, float forwardRayLength, float upRightRayLength, float downRightRayLength, float preferedForwardRayLength, float preferedUpRightRaylength, float preferedDownRightRayLength, float theFitnessScore)
+    public GenomeDataClass(float delayedTime, 
+                            float forwardRayLength, 
+                            float upRightRayLength, 
+                            float downRightRayLength, 
+                            float preferedForwardRayLength, 
+                            float preferedUpRightRaylength, 
+                            float preferedDownRightRayLength, 
+                            float theFitnessScore)
     {
         genomeDelayedTime = delayedTime;
         genomeForwardRayLength = forwardRayLength;

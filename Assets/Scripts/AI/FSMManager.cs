@@ -11,8 +11,6 @@ public class FSMManager : MonoBehaviour
     
     // Lists
     public List<GameObject> mapList = new List<GameObject>();
-
-    
     public List<GenomeDataClass> currentGenerationGenomeArray = new List<GenomeDataClass>();
     public List<GenomeDataClass> nextGenerationGenomeArray = new List<GenomeDataClass>();
     public List<GenomeDataClass> bestSeedMarioGenomeArray = new List<GenomeDataClass>();
@@ -32,10 +30,6 @@ public class FSMManager : MonoBehaviour
 
     // Where you want the instantiation to start.
     public Vector2 originPos;
-
-    // File String
-    [Header("XML FILE WRITING VARIABLE")]
-    public string genomeFileName = "GenomeFile";
 
     // Genetic Algorithm Variables
     [Header("Genetic Algorithm Variables")]
@@ -77,8 +71,7 @@ public class FSMManager : MonoBehaviour
                 }
 
                 // Save to next generation array for Genetic Alogirthm functions
-                nextGenerationGenomeArray.Add(currentGenerationGenomeArray[i]);
-               
+                nextGenerationGenomeArray.Add(currentGenerationGenomeArray[i]);              
             }
 
             // Run Selection
@@ -90,17 +83,12 @@ public class FSMManager : MonoBehaviour
             // Instate maps
             InstantiateMaps();
 
-            // Assign data
-           //AssignData();
-
             // Move to new Gen
             generation++;
 
             // Clear current gen once not needed for next generation
             currentGenerationGenomeArray.Clear();
         }
-
-
     }
 
     private void SortGenome()
@@ -298,7 +286,13 @@ public class FSMManager : MonoBehaviour
         }
 
         // Set up new child
-        GenomeDataClass newChild = new GenomeDataClass(tempDelayedTime ,tempForwardRayLength, tempUpRightRayLength, tempDownRightRayLength, tempPreferedForwardRayLength, tempPreferedUpRightRayLength, tempPreferedDownRightRayLength);
+        GenomeDataClass newChild = new GenomeDataClass(tempDelayedTime, 
+                                                        tempForwardRayLength, 
+                                                        tempUpRightRayLength, 
+                                                        tempDownRightRayLength, 
+                                                        tempPreferedForwardRayLength, 
+                                                        tempPreferedUpRightRayLength,
+                                                        tempPreferedDownRightRayLength);
 
         
         // Add the new child to the next generation
@@ -383,24 +377,6 @@ public class FSMManager : MonoBehaviour
         return value;
     }
 
-    private void AssignData()
-    {
-        // If in the first generation
-        if (generation == 0)
-        {
-            return;
-        }
-        // If not first gen;
-        else
-        {
-            // Itterate through map list
-            for (int i = 0; i < mapList.Count; i++)
-            {
-                mapList[i].GetComponent<LevelScript>().LoadMarioGenome(nextGenerationGenomeArray[i]);
-            }
-        }
-    }
-
     public float GenerateRandomNumber(float startNumber, float endNumber)
     {
         float randomVariable = Mathf.RoundToInt(Random.Range(startNumber, endNumber));
@@ -445,7 +421,6 @@ public class FSMManager : MonoBehaviour
                 Vector2 pos = new Vector2(originPos.x + (x * xBound), originPos.y + (y * yBound));
                 var newMap = Instantiate(mapPrefab, pos, Quaternion.identity);
                 newMap.transform.parent = parentGrid;
-
                 mapList.Add(newMap);
             }
         }
@@ -465,12 +440,7 @@ public class FSMManager : MonoBehaviour
        catch
        {
             Debug.Log("Check Generation");
-       }
-            
-        
-    
-
-        
+       }        
     }
 
     public void SaveGenomeToXMLFile(string fileName)
