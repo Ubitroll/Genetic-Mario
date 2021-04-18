@@ -22,6 +22,9 @@ public class MarioFSM : MonoBehaviour
 
     public int floorDistance = 2;
 
+    public Vector2 previousLocation;
+    public float DeathTimer = 5;
+
     public bool hasRan = false;
 
     // Gentic Algorithm
@@ -377,6 +380,24 @@ public class MarioFSM : MonoBehaviour
     {
         // Measures distance between mario and finish line
         distanceToFinish = Vector2.Distance(this.transform.position, finishLine.transform.position);
+
+        
+        if (Vector2.Distance( new Vector2(this.transform.position.x, 0), previousLocation) >= 0.5)
+        {
+            previousLocation = new Vector2(this.transform.position.x, 0);
+            DeathTimer = 5;
+        }
+        else
+        {
+            DeathTimer -= Time.deltaTime;
+            if (DeathTimer <= 0)
+            {
+                this.GetComponent<Mario>().MarioDeath();
+            }
+        }
+       
+
+
 
         if (currentState != state.CompletedLevel)
         {            

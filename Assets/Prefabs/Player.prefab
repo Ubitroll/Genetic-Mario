@@ -204,9 +204,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   floorDistance: 2
+  previousLocation: {x: 0, y: 0}
+  DeathTimer: 5
   hasRan: 0
   fitnessScore: 0
-  maxTime: 15
+  maxTime: 120
   currentTime: 0
   maxDistance: 0
   distanceToFinish: 0
