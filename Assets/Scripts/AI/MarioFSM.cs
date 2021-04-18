@@ -72,9 +72,6 @@ public class MarioFSM : MonoBehaviour
             SetStartRandomValues();
         }
         
-
-        
-
         // Set Rigid Body
         rigidBody = GetComponent<Rigidbody2D>();
 
@@ -332,7 +329,14 @@ public class MarioFSM : MonoBehaviour
 
             if (!hasRan)
             {
-                GenomeDataClass thisMarioData = new GenomeDataClass(jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, preferedForwardRayDistance, preferedUpRightRayDistance, preferedDownRightRayDistance, fitnessScore);
+                GenomeDataClass thisMarioData = new GenomeDataClass(jumpDelayTime,
+                                                                    forwardRaycastLength,
+                                                                    upRightRaycastLength, 
+                                                                    downRightRaycastLength, 
+                                                                    preferedForwardRayDistance, 
+                                                                    preferedUpRightRayDistance, 
+                                                                    preferedDownRightRayDistance, 
+                                                                    fitnessScore);
                 GameObject.Find("GenomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData);
                 hasRan = true;
             }
@@ -344,7 +348,14 @@ public class MarioFSM : MonoBehaviour
 
             if (!hasRan)
             {
-                GenomeDataClass thisMarioData = new GenomeDataClass(jumpDelayTime, forwardRaycastLength, upRightRaycastLength, downRightRaycastLength, preferedForwardRayDistance, preferedUpRightRayDistance, preferedDownRightRayDistance, fitnessScore);
+                GenomeDataClass thisMarioData = new GenomeDataClass(jumpDelayTime, 
+                                                                    forwardRaycastLength, 
+                                                                    upRightRaycastLength, 
+                                                                    downRightRaycastLength, 
+                                                                    preferedForwardRayDistance, 
+                                                                    preferedUpRightRayDistance, 
+                                                                    preferedDownRightRayDistance, 
+                                                                    fitnessScore);
                 GameObject.Find("GenomeManager").GetComponent<FSMManager>().currentGenerationGenomeArray.Add(thisMarioData);
                 hasRan = true;
             }
@@ -380,8 +391,7 @@ public class MarioFSM : MonoBehaviour
     {
         // Measures distance between mario and finish line
         distanceToFinish = Vector2.Distance(this.transform.position, finishLine.transform.position);
-
-        
+                
         if (Vector2.Distance( new Vector2(this.transform.position.x, 0), previousLocation) >= 0.5)
         {
             previousLocation = new Vector2(this.transform.position.x, 0);
@@ -396,15 +406,11 @@ public class MarioFSM : MonoBehaviour
             }
         }
        
-
-
-
         if (currentState != state.CompletedLevel)
         {            
             // Track mario's current time
             currentTime += Time.deltaTime;
-        }
-        
+        }        
     }
 
     private void UpdateFitnessScore()
